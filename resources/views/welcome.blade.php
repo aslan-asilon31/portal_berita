@@ -34,7 +34,9 @@
                                     @else 
                                     <td ><img src="{{ Storage::url('public/informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 100%"></td>
                                     @endif
-                                    <div class="ribbon">{{$kg->masterTypePost->name}}</div>
+                                <div class="ribbon">{{$kg->masterTypePost->name}}</div>
+                                    </div>
+
                                 </div>
                                 <div class="activity-info">
                                     
@@ -84,7 +86,7 @@
                                     @if(empty($br->image) || is_null($br->image))
                                     <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                                     @else 
-                                    <td><img src="{{ Storage::url('public/informasi__kegiatan/'.$br->image) }}" class="rounded" style="width: 100%"></td>
+                                    <td><img src="{{ Storage::url('public/informasi__berita/'.$br->image) }}" class="rounded" style="width: 100%"></td>
                                     @endif
                                 </div>
                                 <div class="news-info">

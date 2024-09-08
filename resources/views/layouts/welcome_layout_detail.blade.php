@@ -8,6 +8,7 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="{{ asset('portal_berita/css/beranda_default.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="{{ asset('portal_berita/img/portal-berita-logo.png') }}" type="image/x-icon">
 
     @yield('styles')
 
