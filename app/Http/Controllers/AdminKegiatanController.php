@@ -13,6 +13,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminKegiatanController extends Controller
 {
@@ -67,13 +68,31 @@ class AdminKegiatanController extends Controller
 
 
         //upload image
-        $image = $request->file('image');
-        $image->storeAs('public/informasi__kegiatan', $image->hashName());
+        // Ambil file dari request
+        $file = $request->file('image');
+        $originalFileName = $file->getClientOriginalName();
+
+        // Tentukan lokasi tujuan di dalam folder 'public'
+        $destinationPath = public_path('informasi__kegiatan');
+
+        // Pastikan folder tujuan ada
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        // Simpan file ke folder 'public/informasi__kegiatan'
+        $fileName = $file->getClientOriginalName();
+        $file->move($destinationPath, $fileName);
+
+        // Mengembalikan URL untuk akses gambar
+        $fileUrl = url('informasi__kegiatan/' . $fileName);
+        //upload image end
+
 
         $news = News::create([
             'type_news_id'     => $request->kegiatan_type,
             'cat_post_id'     => $request->kegiatan_status,
-            'image'     => $image->hashName(),
+            'image'     => $originalFileName,
             'name'     => $request->kegiatan_name,
             'desc2'     => $request->kegiatan_detail,
             'status'   => $request->kegiatan_status,
@@ -138,15 +157,39 @@ class AdminKegiatanController extends Controller
         } else {
 
             //hapus old image
-            Storage::disk('local')->delete('public/informasi__kegiatan/'.$news->image);
+                $filePath = public_path('informasi__kegiatan/' . $news->image);
+
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+            //hapus old image end
 
             //upload new image
-            $image = $request->file('image');
-            $image->storeAs('public/informasi__kegiatan', $image->hashName());
+                //upload image
+                // Ambil file dari request
+                $file = $request->file('image');
+                $originalFileName = $file->getClientOriginalName();
+
+                // Tentukan lokasi tujuan di dalam folder 'public'
+                $destinationPath = public_path('informasi__kegiatan');
+
+                // Pastikan folder tujuan ada
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                // Simpan file ke folder 'public/informasi__kegiatan'
+                $fileName = $file->getClientOriginalName();
+                $file->move($destinationPath, $fileName);
+
+                // Mengembalikan URL untuk akses gambar
+                $fileUrl = url('informasi__kegiatan/' . $fileName);
+            //upload image end
+
 
             $news->update([
                 'type_news_id'     => $request->kegiatan_type,
-                'image'     => $image->hashName(),
+                'image'     => $originalFileName,
                 'name'     => $request->kegiatan_name,
                 'status'   => $request->kegiatan_status,
                 'desc2'   => $request->kegiatan_detail,
@@ -174,7 +217,15 @@ class AdminKegiatanController extends Controller
     public function destroy($id)
     {
         $news = News::findOrFail($id);
-        Storage::disk('local')->delete('public/informasi__kegiatan/'.$news->image);
+            
+        // Tentukan path file yang akan dihapus
+        $filePath = public_path('informasi__kegiatan/' . $news->image);
+
+        // Hapus file jika ada
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+
         $news->delete();
 
         if($news){

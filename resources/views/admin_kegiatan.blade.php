@@ -51,9 +51,9 @@
                             @if(empty($kg->image) || is_null($kg->image))
                               <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 150px"></td>
                             @else 
-                              <td><img src="{{ Storage::url('public/informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 150px"></td>
+                              <td><img src="{{ asset('informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 150px"></td>
                             @endif
-                            <td>{{ $kg->name }}</td>
+                            <td>{!! $kg->name !!}</td>
                             <td>{{ $kg->masterCatPost->name  }}</td>
                             <td>{{ optional($kg->masterTypePost)->name ?? '-' }}</td>
                             <td>
