@@ -92,6 +92,30 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Agenda Detail</label>
+                                <textarea id="agenda_detail" name="agenda_detail" value="{{ old('agenda_detail') }}" class="form-control @error('agenda_detail') is-invalid @enderror">
+                                  Place <em>some</em> <u>text</u> <strong>here</strong>
+                                </textarea>
+
+                                @error('agenda_detail')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Agenda Location</label>
+                                <textarea id="agenda_location" name="agenda_location" value="{{ old('agenda_location') }}" class="form-control @error('agenda_location') is-invalid @enderror">
+                                  Place <em>some</em> <u>text</u> <strong>here</strong>
+                                </textarea>
+
+                                @error('agenda_location')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>
                                   Status 
                                   <a href="javascript::void(0)" style="font-size:13px;color:purple;text-decoration:underline;" class="" data-toggle="modal" data-target="#modal-default">
@@ -111,17 +135,31 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                              <label>Waktu @yield('title') mulai dan berakhir</label>
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text"><i class="far fa-clock"></i></span>
-                                </div>
-                                <input type="text" class="form-control float-right" name="reservationtime" id="reservationtime">
+                            <div class="col-lg-12 ">
+                              <div class="col-lg-3">
+                                  <div class="form-group ">
+                                    <label>Waktu @yield('title') mulai </label>
+                                    <div class="input-group">
+                                      <div class="input-group date date-input" id="reservationdatetime_start" data-target-input="nearest">
+                                          <input type="datetime-local" name="start_date" value="" class="form-control " data-target="#"/>
+                                      </div>
+                                    </div>
+                                  </div>
                               </div>
-                              <!-- /.input group -->
+                              <br>
+                              <div class="col-lg-6">
+
+                                <div class="form-group ">
+                                  <label>Waktu @yield('title') berakhir </label>
+                                  <div class="input-group">
+                                      <div class="input-group date date-input" id="reservationdatetime_end" data-target-input="nearest">
+                                          <input type="datetime-local" name="end_date" value="" class="form-control " data-target="#"/>
+                                      </div>
+                                  </div>
+                                </div>
+
+                              </div>
                             </div>
-                            <!-- /.form group -->
                 
                         </div>
                         <div class="col-lg-4">
@@ -304,6 +342,8 @@
 
 
         $('#agenda_name').summernote()
+        $('#agenda_detail').summernote()
+        $('#agenda_location').summernote()
 
         $('.select2').select2()
 
@@ -374,7 +414,7 @@
                         var html = '<div class="col-12 col-sm-6 col-md-6">' +
                             '<div class="info-box">' +
                             '<span class="info-box-icon bg-info elevation-1">' +
-                            '<img src="{{ Storage::url('public/') }}' + product.product_image + '" style="width:70px;height:60px;">' +
+                            '<img src="{{ asset('') }}' + product.product_image + '" style="width:70px;height:60px;">' +
                             '</span>' +
                             favoriteHtml +
                             '<div class="info-box-content">' +

@@ -60,10 +60,10 @@
         <nav class="navbar">
             <div class="navbar-left">
             @if(isset($logo) && !empty($logo->image))
-    <img src="{{ Storage::url('website-information/' . $logo->image) }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
-@else
-    <img src="{{ Storage::url('website-information/logo-nama-new1.png') }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
-@endif
+                <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/' . $logo->image) }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
+            @else
+                <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/logo-nama-new1.png') }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
+            @endif
 
             </div>
             <button class="navbar-toggle" id="navbar-toggle">&#9776;</button> <!-- Toggle button -->
@@ -92,13 +92,13 @@
                     <li class="submenu {{ request()->routeIs('galeri_foto.index') ? 'active' : '' }} {{ request()->routeIs('galeri_video.index') ? 'active' : '' }} {{ request()->routeIs('infografis.index') ? 'active' : '' }}">
                         <a href="#">Galeri</a>
                         <ul class="submenu-items">
-                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="galeri-foto">Galeri Foto</a></li>
-                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="galeri-video">Galeri Video</a></li>
-                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"hidden><a href="infografis">Infografis</a></li>
+                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="{{route('galeri_foto.index')}}">Galeri Foto</a></li>
+                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="{{route('galeri_video.index')}}">Galeri Video</a></li>
+                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"hidden><a href="{{route('infografis.index')}}">Infografis</a></li>
                         </ul>
                     </li>
-                    <li   class="{{ request()->routeIs('kontak.index') ? 'active' : '' }}"><a href="kontak">Kontak</a></li>
-                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="susunan-redaksi">Susunan Pengurus</a></li>
+                    <li   class="{{ request()->routeIs('mykontak.index') ? 'active' : '' }}"><a href="{{route('mykontak.index')}}">Kontak</a></li>
+                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="{{route('susunan_redaksi.index')}}">Susunan Pengurus</a></li>
                 </ul>
             </div>
         </nav>
@@ -191,6 +191,6 @@
         </div>
     </footer>
 
-    <script src="{{asset('portal_berita/js/beranda_default.js')}}"></script>
+    <script src="{{ asset('portal_berita/js/beranda_default.js') }}"></script>
 </body>
 </html>

@@ -1,11 +1,12 @@
 @extends('layouts/welcome_layout')
 
+@section('title', 'selamat datang')
 @section('carousel')
 
     <div class="carousel">
         <div class="carousel-inner">
             <div class="carousel-item">
-                <img src="{{ Storage::url('public/website-information/' . $banner->image) }}" alt="Banner 1">
+                <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/' . $banner->image) }}" alt="Banner 1">
             </div>
         </div>
         <a class="carousel-prev" onclick="prevSlide()">&#10094;</a>
@@ -32,7 +33,7 @@
                                     @if(empty($kg->image) || is_null($kg->image))
                                     <td ><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                                     @else 
-                                    <td ><img src="{{ Storage::url('public/informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 100%"></td>
+                                    <td ><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 100%"></td>
                                     @endif
                                 <div class="ribbon">{{$kg->masterTypePost->name}}</div>
                                     </div>
@@ -60,7 +61,7 @@
                                         </p>
                                     @endif
 
-                                    <p>{{$kg->name}}</p>
+                                    <p>{!!$kg->name!!}</p>
                                 </div>
                             </div>
                         </a>
@@ -86,7 +87,7 @@
                                     @if(empty($br->image) || is_null($br->image))
                                     <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                                     @else 
-                                    <td><img src="{{ Storage::url('public/informasi__berita/'.$br->image) }}" class="rounded" style="width: 100%"></td>
+                                    <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__berita/'.$br->image) }}" class="rounded" style="width: 100%"></td>
                                     @endif
                                 </div>
                                 <div class="news-info">
@@ -109,7 +110,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </p>
                                     @endif
-                                    <p>{{ $br->name }}</p>
+                                    <p>{!! $br->name !!}</p>
                                 </div>
                             </div>
                         </a>
@@ -134,7 +135,7 @@
                                     @if(empty($pg->image) || is_null($pg->image))
                                     <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                                     @else 
-                                    <td><img src="{{ Storage::url('public/informasi__kegiatan/'.$pg->image) }}" class="rounded" style="width: 100%"></td>
+                                    <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__pengumuman/'.$pg->image) }}" class="rounded" style="width: 100%"></td>
                                     @endif
                                 </div>
                                 <div class="announcement-info">
@@ -157,7 +158,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </p>
                                     @endif
-                                    <p>{{ $pg->name }}</p>
+                                    <p>{!! $pg->name !!}</p>
                                 </div>
                             </div>
                         </a>

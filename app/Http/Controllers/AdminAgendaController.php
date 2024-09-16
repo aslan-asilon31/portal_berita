@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Models\Settings;
 use App\Models\Theme;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminAgendaController extends Controller
 {
@@ -46,26 +47,35 @@ class AdminAgendaController extends Controller
         ]);
 
         //upload image
-        $image = $request->file('image');
-        $image->storeAs('public/informasi__agenda', $image->hashName());
+            // Ambil file dari request
+            $file = $request->file('image');
+            $originalFileName = $file->getClientOriginalName();
 
-        // Ambil nilai reservationtime
-        $reservationTime = $request->input('reservationtime');
-        
-        // Pisahkan string berdasarkan tanda "-"
-        list($startTime, $endTime) = explode(' - ', $reservationTime);
-        
-        // Format tanggal dan waktu
-        // Ubah format tanggal dan waktu sesuai dengan format yang dibutuhkan
-        $startDateTime = \DateTime::createFromFormat('m/d/Y h:i A', trim($startTime))->format('Y-m-d H:i:s');
-        $endDateTime = \DateTime::createFromFormat('m/d/Y h:i A', trim($endTime))->format('Y-m-d H:i:s');
+            // Tentukan lokasi tujuan di dalam folder 'public'
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__agenda');
+
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Simpan file ke folder 'public/informasi__agenda'
+            $fileName = $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
+
+            // Mengembalikan URL untuk akses gambar
+            $fileUrl = url('PORTAL-BERITA-ASSET/informasi__agenda/' . $fileName);
+        //upload image end
+
         
         $news = News::create([
-            'image'     => $image->hashName(),
+            'image'     => $originalFileName,
             'name'     => $request->agenda_name,
+            'event'     => $request->agenda_detail,
+            'location'     => $request->agenda_location,
             'status'   => $request->agenda_status,
-            'start_date'   => $request->startDateTime,
-            'end_date'   => $request->endDateTime,
+            'start_date'   => $request->start_date,
+            'end_date'   => $request->end_date,
             'category'   => 'agenda'
         ]);
 
@@ -95,7 +105,7 @@ class AdminAgendaController extends Controller
 
     public function update(Request $request, News $news)
     { 
-        dd($request);  
+        
         //get data  by ID
         $news = News::findOrFail($request->id);
 
@@ -115,15 +125,39 @@ class AdminAgendaController extends Controller
 
         } else {
 
+
             //hapus old image
-            Storage::disk('local')->delete('public/informasi__agenda/'.$news->image);
+            $filePath = public_path('PORTAL-BERITA-ASSET/informasi__agenda/' . $news->image);
+
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+            //hapus old image end
 
             //upload new image
-            $image = $request->file('image');
-            $image->storeAs('public/informasi__agenda', $image->hashName());
+                //upload image
+                // Ambil file dari request
+                $file = $request->file('image');
+                $originalFileName = $file->getClientOriginalName();
+
+                // Tentukan lokasi tujuan di dalam folder 'public'
+                $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__agenda');
+
+                // Pastikan folder tujuan ada
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                // Simpan file ke folder 'public/informasi__agenda'
+                $fileName = $file->getClientOriginalName();
+                $file->move($destinationPath, $fileName);
+
+                // Mengembalikan URL untuk akses gambar
+                $fileUrl = url('informasi__agenda/' . $fileName);
+            //upload image end
 
             $news->update([
-                'image'     => $image->hashName(),
+                'image'     => $originalFileName,
                 'name'     => $request->agenda_name,
                 'desc2'     => $request->agenda_detail,
                 'status'   => $request->agenda_status,
@@ -152,7 +186,13 @@ class AdminAgendaController extends Controller
     public function destroy($id)
     {
         $news = News::findOrFail($id);
-        Storage::disk('local')->delete('public/informasi__agenda/'.$news->image);
+        // Tentukan path file yang akan dihapus
+        $filePath = public_path('PORTAL-BERITA-ASSET/informasi__agenda/' . $news->image);
+
+        // Hapus file jika ada
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
         $news->delete();
 
         if($news){

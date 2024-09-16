@@ -1,6 +1,6 @@
 @extends('layouts/welcome_layout')
 
-@section('title','beranda')
+@section('title','agenda')
 @section('content')
 
 
@@ -69,29 +69,46 @@
             </style>
 
     <div class="container container-agenda">
-        <section class="agenda">
+        <section class="">
             <h2>Agenda</h2>
             <table>
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nama agenda</th>
+                        <th>Nama Agenda / Acara</th>
+                        <th>Tanggal</th>
                         <th>Waktu</th>
-                        <th>Tempat</th>
-                        <th>Acara</th>
+                        <th>Lokasi / Tempat</th>
+                        <th>Detail Agenda</th>
                     </tr>
                 </thead>
                 <tbody>
-                @php
-                    $no = 1;
-                @endphp
+                    
                     @forelse($agenda as $ag)
+
+                    @php
+                        $no = 1;
+                        $startDate = \Carbon\Carbon::parse($ag->start_date);
+                        $endDate = \Carbon\Carbon::parse($ag->end_date);
+      
+      
+                        // Ambil hanya 5 kata pertama
+                        $words = explode(' ', strip_tags($ag->event));
+                        $limitedWords = implode(' ', array_slice($words, 0, 5));
+
+                    @endphp
                     <tr>
                         <td>{{ $no }}</td>
-                        <td>{{$ag->name}}</td>
-                        <td>{{ date('H:i:s', strtotime($ag->start_date)) }}</td>
-                        <td>{{$ag->location}}</td>
-                        <td>{{$ag->event}}</td>
+                        <td>{!!$ag->name!!}</td>
+                        <td>
+                        {{ $startDate->isoFormat('dddd, D MMMM YYYY') }} - {{ $endDate->isoFormat('dddd, D MMMM YYYY') }}
+                        </td>
+                        <td>{{ date('H:i', strtotime($ag->start_date)) }} WIB</td>
+                        <td>{!!$ag->location!!}</td>
+                        <td>
+                            {{ $limitedWords }}...
+                            <a href="detail/{{$ag->id}}/agenda">baca detail</a>
+                        </td>
                     </tr>
                     @php
                         $no++;
@@ -108,27 +125,5 @@
 
             {{ $agenda->links() }}
         </section>
-        <aside class="kegiatan">
-            <h2>Kegiatan</h2>
-            <ul>
-                @forelse($kegiatan as $kg)
-                <li>
-                    <h3>{{$kg->name}}</h3>
-                    <p class="date">{{ \Carbon\Carbon::parse($kg->created_at)->isoFormat('dddd, D MMMM YYYY') }}</p>
-                    <p class="category">{{$kg->masterTypePost->name}}</p>
-                </li>
-                @php
-                    $no++;
-                @endphp
-                @empty
-                <li>
-                    tidak ada data
-                </li>
-                @endforelse
-                {{ $kegiatan->links() }}
-
-                <!-- Add more items as needed -->
-            </ul>
-        </aside>
     </div>
 @endsection()

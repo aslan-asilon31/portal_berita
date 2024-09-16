@@ -11,6 +11,8 @@ use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Models\Settings;
+use Illuminate\Support\Facades\File;
+
 use Illuminate\Support\Facades\Storage;
 
 class AdminSettingController extends Controller
@@ -43,8 +45,26 @@ class AdminSettingController extends Controller
    
 
         //upload image
-        $image = $request->file('image');
-        $image->storeAs('public/informasi__agenda', $image->hashName());
+        //upload image
+            // Ambil file dari request
+            $file = $request->file('image');
+            $originalFileName = $file->getClientOriginalName();
+
+            // Tentukan lokasi tujuan di dalam folder 'public'
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan');
+
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Simpan file ke folder 'public/informasi__kegiatan'
+            $fileName = $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
+
+            // Mengembalikan URL untuk akses gambar
+            $fileUrl = url('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $fileName);
+        //upload image end
 
         // Ambil nilai reservationtime
         $reservationTime = $request->input('reservationtime');
@@ -58,7 +78,7 @@ class AdminSettingController extends Controller
         $endDateTime = \DateTime::createFromFormat('m/d/Y h:i A', trim($endTime))->format('Y-m-d H:i:s');
         
         $news = News::create([
-            'image'     => $image->hashName(),
+            'image'     => $originalFileName,
             'name'     => $request->agenda_name,
             'status'   => $request->agenda_status,
             'start_date'   => $request->startDateTime,

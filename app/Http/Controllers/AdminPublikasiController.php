@@ -11,6 +11,8 @@ use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Models\Settings;
+use Illuminate\Support\Facades\File;
+
 use Illuminate\Support\Facades\Storage;
 
 class AdminPublikasiController extends Controller
@@ -49,13 +51,32 @@ class AdminPublikasiController extends Controller
         ]);
 
         $publikasi_name = strip_tags($request->publikasi_name);
-        // Unggah file
-        $pdf_file = $request->file('pdf_file');
-        $pdf_path = $pdf_file->storeAs('public/file-publikasi', $pdf_file->hashName());
     
+        //upload file
+            // Ambil file dari request
+            $file = $request->file('pdf_file');
+            $originalFileName = $file->getClientOriginalName();
+
+            // Tentukan lokasi tujuan di dalam folder 'public'
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/file-publikasi');
+
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Simpan file ke folder 'public/informasi__kegiatan'
+            $fileName = $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
+
+            // Mengembalikan URL untuk akses gambar
+            $fileUrl = url('PORTAL-BERITA-ASSET/file-publikasi/' . $fileName);
+        //upload file end
+
+
         // Simpan informasi ke database
         $news = News::create([
-            'file' => $pdf_file->hashName(),
+            'file' => $originalFileName,
             'name' => $publikasi_name,
             'status' => $request->publikasi_status,
             'category' => 'file-publikasi'

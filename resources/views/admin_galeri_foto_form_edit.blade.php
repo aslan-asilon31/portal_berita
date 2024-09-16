@@ -5,9 +5,12 @@
 
 
     <style>
+        .d-none {
+            display: none;
+        }
         .scrollable-card {
             padding: 15px;
-            height: 370px;
+            height: 100%;
             overflow: auto; /* Aktifkan scrollbar pada kedua sumbu */
             box-sizing: border-box; 
         }
@@ -53,7 +56,7 @@
         .input-group-append {
             margin-left: -1px;
         }
-        #imagePreview {
+        #imagePreviewGaleriFoto {
             display: block;
             max-width: 100%;
             height: auto;
@@ -93,7 +96,7 @@
                                     <label for="exampleInputEmail1">Nama agenda</label>
                                     <input type="text" name="id" value="{{ $news->id }}" hidden>
                                     <textarea id="foto_name" name="foto_name" class="form-control @error('foto_name') is-invalid @enderror">
-                                        {{ old('name', $news->name) }}
+                                        {!! old('name', $news->name) !!}
                                     </textarea>
 
                                     @error('foto_name')
@@ -126,33 +129,41 @@
 
                             </div>
                             <div class="col-lg-4">
-                                @if($news->image)
+                                
                                     <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
+                                        <label for="image">Masukan Gambar <label for="" class="rounded-label-green"></label></label>
+
+                                        <div id="progressContainer" class="d-none">
+                                            <div class="progress">
+                                                <div id="progressBar" class="progress-bar bg-primary progress-bar-striped" role="progressbar"
+                                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                <span id="progressText" class="sr-only">0% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" value="{{ old('image', $news->image) }}" id="image" name="image" accept="image/*">
+                                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                                                <input type="hidden" id="cropped_image" name="image_cropped">
                                                 <label class="custom-file-label" for="image">Choose file</label>
                                             </div>
                                         </div>
+                                        @if($news->image)
                                         <div class="mt-2" style="width:100%;">
-                                            <img src="{{ Storage::url('public/galeri__foto/' . $news->image) }}" class="rounded" style="width: 150px">
+                                            <img id="imagePreviewGaleriFoto" src="{{ asset('PORTAL-BERITA-ASSET/galeri__foto/'.$news->image) }}" class="rounded" style="width: 150px">
                                         </div>
-                                    </div>
-                                @else
-                                    <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-                                                <label class="custom-file-label" for="image">Choose file</label>
-                                            </div>
-                                        </div>
+                                        @else 
                                         <div class="mt-2">
-                                            <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
+                                            <img id="imagePreviewGaleriFoto" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
                                         </div>
+                                        @endif
+
                                     </div>
-                                @endif
+
+                                   
+                                <button type="button" id="cropButton" class="btn btn-sm bg-purple text-white mt-2">Crop & Save</button>
+
                             </div>
                         </div>
                     </div>
@@ -201,9 +212,12 @@
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.css') }}">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
   @endpush
 
   @push('scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
     <!-- daterangepicker -->
   <script src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
@@ -215,27 +229,6 @@
 
   <!-- date-range-picker -->
   <script src="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script>
-
-
-    <script>
-      document.getElementById('image').addEventListener('change', function(event) {
-          var input = event.target;
-          var preview = document.getElementById('imagePreview');
-
-          if (input.files && input.files[0]) {
-              var reader = new FileReader();
-              
-              reader.onload = function(e) {
-                  preview.src = e.target.result;
-                  preview.style.display = 'block';
-              }
-              
-              reader.readAsDataURL(input.files[0]);
-          } else {
-              preview.src = '{{ asset('no-image.jpg') }}';
-          }
-      });
-    </script>
 
     <!-- daterangepicker -->
     <script src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
@@ -354,4 +347,112 @@
 
       });
     </script>
+
+    <script>
+        document.getElementById('image').addEventListener('change', function(event) {
+        var input = event.target;
+        var preview = document.getElementById('imagePreviewGaleriFoto');
+
+        if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '{{ asset('no-image.jpg') }}';
+            }
+        });
+
+    </script>
+    
+
+    <script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('imagePreviewGaleriFoto');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    var cropper;
+    var image = document.getElementById('imagePreviewGaleriFoto');
+    var imageInput = document.getElementById('image');
+
+    imageInput.addEventListener('change', function(e) {
+        var files = e.target.files;
+        var done = function (url) {
+            image.src = url;
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                aspectRatio: 750 / 500, // Sesuaikan dengan rasio yang diinginkan
+                viewMode: 1,
+                preview: '.preview',
+            });
+        };
+
+        var reader;
+        var file;
+        if (files && files.length > 0) {
+            file = files[0];
+            reader = new FileReader();
+            reader.onload = function () {
+                done(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('cropButton').addEventListener('click', function() {
+        var progressContainer = document.getElementById('progressContainer');
+        var progressBar = document.getElementById('progressBar');
+        var progressText = document.getElementById('progressText');
+        var progress = 0;
+        
+        if (!cropper) {
+            alert('Cropper belum diinisialisasi');
+            return;
+        }
+
+        // Tampilkan progress bar
+        progressContainer.classList.remove('d-none');
+
+        var canvas = cropper.getCroppedCanvas();
+        if (canvas) {
+            var base64Image = canvas.toDataURL('image/png');
+            document.getElementById('cropped_image').value = base64Image;
+
+            // Simulasi proses pengolahan
+            var interval = setInterval(function() {
+                if (progress < 100) {
+                    progress += 10; // Naikkan progress
+                    progressBar.style.width = progress + '%';
+                    progressBar.setAttribute('aria-valuenow', progress);
+                    progressText.textContent = progress + '% Complete';
+                } else {
+                    clearInterval(interval);
+                    // Sembunyikan progress bar setelah selesai
+                    setTimeout(function() {
+                        progressContainer.classList.add('d-none');
+                        alert('Sukses di crop');
+                    }, 500);
+                }
+            }, 100); // Interval waktu untuk simulasi
+
+        } else {
+            alert('Tidak bisa mengambil canvas dari cropper');
+        }
+    });
+</script>
+
+
+
+
   @endpush

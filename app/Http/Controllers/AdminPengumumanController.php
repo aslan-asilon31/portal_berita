@@ -11,6 +11,8 @@ use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Models\Settings;
+use Illuminate\Support\Facades\File;
+
 use Illuminate\Support\Facades\Storage;
 
 class AdminPengumumanController extends Controller
@@ -39,7 +41,6 @@ class AdminPengumumanController extends Controller
 
         $kategori = MasterCatPost::where('type','kegiatan');
 
-        dd($kategori);
         return view('admin_pengumuman_form', compact('theme','logo','kategori'));
     }
 
@@ -48,32 +49,39 @@ class AdminPengumumanController extends Controller
 
             // Jika ada gambar yang diunggah
             if ($request->hasFile('image')) {
-                // Unggah gambar
-                $image = $request->file('image');
-                $imageName = $image->hashName();
-                $image->storeAs('public/informasi__pengumuman', $imageName);
+                //upload image
+                    // Ambil file dari request
+                    $file = $request->file('image');
+                    $originalFileName = $file->getClientOriginalName();
+
+                    // Tentukan lokasi tujuan di dalam folder 'public'
+                    $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__pengumuman');
+
+                    // Pastikan folder tujuan ada
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+
+                    // Simpan file ke folder 'public/informasi__pengumuman'
+                    $fileName = $file->getClientOriginalName();
+                    $file->move($destinationPath, $fileName);
+
+                    // Mengembalikan URL untuk akses gambar
+                    $fileUrl = url('PORTAL-BERITA-ASSET/informasi__pengumuman/' . $fileName);
+                //upload image end
  
             }
             
-            // Ambil nilai reservationtime
-            $reservationTime = $request->input('reservationtime');
-
-            // Pisahkan string berdasarkan tanda "-"
-            list($startTime, $endTime) = explode(' - ', $reservationTime);
-
-            // Format tanggal dan waktu
-            $startDateTime = \DateTime::createFromFormat('m/d/Y h:i A', trim($startTime))->format('Y-m-d H:i:s');
-            $endDateTime = \DateTime::createFromFormat('m/d/Y h:i A', trim($endTime))->format('Y-m-d H:i:s');
-
+        
             // Buat array untuk data yang akan disimpan
             $data = [
                 'name' => $request->input('pengumuman_name'),
-                'image' => $imageName,
+                'image' => $originalFileName,
                 'desc2' => $request->input('pengumuman_detail'),
                 'cat_post_id' => $request->input('pengumuman_status'),
                 'status' => $request->input('pengumuman_status'),
-                'start_date' => $startDateTime,
-                'end_date' => $endDateTime,
+                'start_date'   => $request->start_date,
+                'end_date'   => $request->end_date,
                 'category' => 'pengumuman',
             ];
 
@@ -111,7 +119,6 @@ class AdminPengumumanController extends Controller
     public function update(Request $request, $id)
     {   
 
-
         $news = News::find($id);
 
         // Pastikan data ditemukan
@@ -127,7 +134,7 @@ class AdminPengumumanController extends Controller
             $news->update([
                 'name'     => $cleaned_pengumuman_name,
                 'desc2'     => $pengumuman_detail,
-                'cat_post_id' => $request-pengumuman_status,
+                'cat_post_id' => $request->pengumuman_status,
                 'status'   => $request->pengumuman_status,
                 'start_date'   => $request->startDateTime,
                 'end_date'   => $request->endDateTime,
@@ -146,7 +153,7 @@ class AdminPengumumanController extends Controller
             $news->update([
                 'image'     => $image->hashName(),
                 'name'     => $request->pengumuman_name,
-                'cat_post_id' => $request-pengumuman_status,
+                'cat_post_id' => $request->pengumuman_status,
                 'status'   => $request->pengumuman_status,
                 'start_date'   => $request->startDateTime,
                 'end_date'   => $request->endDateTime,

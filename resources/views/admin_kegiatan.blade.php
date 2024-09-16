@@ -51,7 +51,7 @@
                             @if(empty($kg->image) || is_null($kg->image))
                               <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 150px"></td>
                             @else 
-                              <td><img src="{{ asset('informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 150px"></td>
+                              <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__kegiatan/'.$kg->image) }}" class="rounded" style="width: 150px"></td>
                             @endif
                             <td>{!! $kg->name !!}</td>
                             <td>{{ $kg->masterCatPost->name  }}</td>
@@ -282,7 +282,7 @@
                         var html = '<div class="col-12 col-sm-6 col-md-6">' +
                             '<div class="info-box">' +
                             '<span class="info-box-icon bg-info elevation-1">' +
-                            '<img src="{{ Storage::url('public/') }}' + product.product_image + '" style="width:70px;height:60px;">' +
+                            '<img src="{{ asset('') }}' + product.product_image + '" style="width:70px;height:60px;">' +
                             '</span>' +
                             favoriteHtml +
                             '<div class="info-box-content">' +

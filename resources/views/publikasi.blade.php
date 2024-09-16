@@ -86,9 +86,9 @@
                     @forelse($publikasi as $pb)
                     <tr>
                         <td>{{ $no }}</td>
-                        <td>{{$pb->name}}</td>
+                        <td>{!!$pb->name!!}</td>
                         <td>
-                        <button onclick="downloadFile('{{ asset('storage/file-publikasi/' . $pb->file) }}')" class="btn btn-primary">
+                        <button onclick="downloadFile('{{ asset('storage/file-publikasi/'.$pb->file) }}')" class="btn btn-primary">
                             Download PDF 
                         </button>
                         </td>
@@ -113,7 +113,7 @@
             <ul>
                 @forelse($kegiatan as $kg)
                 <li>
-                    <h3>{{$kg->name}}</h3>
+                    <h3>{!!$kg->name!!}</h3>
                     <p class="date">{{ \Carbon\Carbon::parse($kg->created_at)->isoFormat('dddd, D MMMM YYYY') }}</p>
                     <p class="category">Sosialisasi</p>
                 </li>

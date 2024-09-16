@@ -1,5 +1,6 @@
 @extends('layouts/welcome_layout_detail')
 
+@section('title','detail')
 @section('content')
 
 
@@ -7,32 +8,48 @@
 
     <section class="banner">
             <div class="breadcrumb">
-                <a href="#">Detail</a> / <span>{{$types}}</span>
+                <a href="#">Detail</a> / 
+                <span>
+                    @if($types == 'agenda')
+                        Agenda
+                    @else 
+                        {{$types}}
+                    @endif 
+                </span>
             </div>
             <h2>{!!$news->name!!}</h2>
             <p>{{ \Carbon\Carbon::parse($news->start_date)->isoFormat('dddd, D MMMM YYYY') }} <i class="fa fa-calendar"></i> / 
-            
 
-                @if(!empty($news->masterTypePost->name))
-                        {{$news->masterTypePost->name}}
+                @if($types == 'agenda')
+                    Agenda
+                @else 
+                    @if(!empty($news->masterTypePost->name))
+                            {{$news->masterTypePost->name}}
                     @else
                         
                     @endif
+                @endif 
+
             </p>
 
             <div class="row">
                 <div class="activity-image">
                 @if($types == 'agenda')
-                        <img src="{{ Storage::url('public/informasi_agenda/' . $news->image) }}" alt="agenda image" style="width: 600px;">
+                        @if(empty($news->image) || is_null($news->image))
+                            <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
+                            @else 
+                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__agenda/' . $news->image) }}" class="rounded" style="width: 100%"></td>
+                        @endif 
+
                     @elseif($types == 'pengumuman')
                         @if(empty($news->image) || is_null($news->image))
                             <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                             @else 
-                            <td><img src="{{ Storage::url('public/informasi_pengumuman/' . $news->image) }}" class="rounded" style="width: 100%"></td>
+                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi_pengumuman/' . $news->image) }}" class="rounded" style="width: 100%"></td>
                         @endif 
                     @elseif($types == 'kegiatan')
                         @if(!empty($news->image))
-                            <img src="{{ Storage::url('public/informasi__kegiatan/'.$news->image) }}" alt="Kegiatan image" style="width: 600px;">
+                            <img src="{{ asset('PORTAL-BERITA-ASSET/informasi__kegiatan/'.$news->image) }}" alt="Kegiatan image" style="width: 600px;">
                         @else
                             <img src="{{ asset('no-image.jpg') }}" alt="no image" style="width: 600px;">
                         @endif
@@ -40,28 +57,37 @@
                         @if(empty($news->image) || is_null($news->image))
                             <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                             @else 
-                            <td><img src="{{ Storage::url('public/informasi__berita/' . $news->image) }}" class="rounded" style="width: 100%"></td>
+                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__berita/' . $news->image) }}" class="rounded" style="width: 100%"></td>
                         @endif 
                     @elseif($types == 'infografis')
                         @if(empty($news->image) || is_null($news->image))
                             <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                             @else 
-                            <td><img src="{{ Storage::url('public/informasi__infografi/' . $news->image) }}" class="rounded" style="width: 100%"></td>
+                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__infografi/' . $news->image) }}" class="rounded" style="width: 100%"></td>
                         @endif 
                     @else
                         <img src="{{ asset('no-image.jpg') }}" alt="no image" style="width: 600px;">
                     @endif
 
-                    @if(!empty($news->masterTypePost->name))
-                        <div class="ribbon">{{$news->masterTypePost->name}}</div>
-                    @else
-                        <div class="ribbon">-</div>
-                    @endif
+                    @if($types == 'agenda')
+                        <div class="ribbon">Agenda</div>
+                    @else 
+                        @if(!empty($news->masterTypePost->name))
+                            <div class="ribbon">{{$news->masterTypePost->name}}</div>
+                        @else
+                            <div class="ribbon">-</div>
+                        @endif
+                    @endif 
+                    
                 </div>
             </div>
             <div class="row news-container">
                 <div class="content">
-                    {!!$news->desc2!!}
+                    @if($types == 'agenda')
+                        {!!$news->event!!}
+                    @else 
+                        {!!$news->desc2!!}
+                    @endif 
                 </div>
             </div>
         </section>

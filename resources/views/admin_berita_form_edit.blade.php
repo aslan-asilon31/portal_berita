@@ -94,7 +94,7 @@
                                 <label for="">Nama Berita</label>
                                 <input id="id" name="id" value="{{ old('id', $news->id) }}" hidden>
                                 <textarea id="berita_name_edit" name="berita_name" value="{{ old('berita_name', $news->berita_name) }}" class="form-control @error('berita_name') is-invalid @enderror">
-                                  {{ old('berita_name', $news->name) }}
+                                  {!! old('berita_name', $news->name) !!}
                                 </textarea>
 
                                 @error('berita_name')
@@ -143,7 +143,7 @@
                                         <option value="">Wajib Pilih Tipe Kegiatan</option>
                                         @forelse($type_kegiatan as $tk)
                                             <option value="{{ $tk->id }}" {{ $tk->id == $news->type_news_id ? 'selected' : '' }}>
-                                                {{ $tk->name }}
+                                                {!! $tk->name !!}
                                             </option>
                                         @empty
                                             <option value="">No data available</option>
@@ -196,7 +196,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-2" style="width:100%;">
-                                            <img src="{{ Storage::url('public/informasi__berita/' . $news->image) }}" class="rounded" style="width: 150px">
+                                            <img src="{{ asset('informasi__berita/' . $news->image) }}" class="rounded" style="width: 150px">
                                         </div>
                                     </div>
                                 @else

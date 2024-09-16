@@ -68,24 +68,24 @@ class AdminKegiatanController extends Controller
 
 
         //upload image
-        // Ambil file dari request
-        $file = $request->file('image');
-        $originalFileName = $file->getClientOriginalName();
+            // Ambil file dari request
+            $file = $request->file('image');
+            $originalFileName = $file->getClientOriginalName();
 
-        // Tentukan lokasi tujuan di dalam folder 'public'
-        $destinationPath = public_path('informasi__kegiatan');
+            // Tentukan lokasi tujuan di dalam folder 'public'
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan');
 
-        // Pastikan folder tujuan ada
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
-        }
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
 
-        // Simpan file ke folder 'public/informasi__kegiatan'
-        $fileName = $file->getClientOriginalName();
-        $file->move($destinationPath, $fileName);
+            // Simpan file ke folder 'public/informasi__kegiatan'
+            $fileName = $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
 
-        // Mengembalikan URL untuk akses gambar
-        $fileUrl = url('informasi__kegiatan/' . $fileName);
+            // Mengembalikan URL untuk akses gambar
+            $fileUrl = url('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $fileName);
         //upload image end
 
 
@@ -157,7 +157,7 @@ class AdminKegiatanController extends Controller
         } else {
 
             //hapus old image
-                $filePath = public_path('informasi__kegiatan/' . $news->image);
+                $filePath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $news->image);
 
                 if (File::exists($filePath)) {
                     File::delete($filePath);
@@ -171,7 +171,7 @@ class AdminKegiatanController extends Controller
                 $originalFileName = $file->getClientOriginalName();
 
                 // Tentukan lokasi tujuan di dalam folder 'public'
-                $destinationPath = public_path('informasi__kegiatan');
+                $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan');
 
                 // Pastikan folder tujuan ada
                 if (!file_exists($destinationPath)) {
@@ -219,7 +219,7 @@ class AdminKegiatanController extends Controller
         $news = News::findOrFail($id);
             
         // Tentukan path file yang akan dihapus
-        $filePath = public_path('informasi__kegiatan/' . $news->image);
+        $filePath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $news->image);
 
         // Hapus file jika ada
         if (File::exists($filePath)) {

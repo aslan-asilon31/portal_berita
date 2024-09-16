@@ -12,6 +12,7 @@ use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Models\Theme;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -23,9 +24,9 @@ class AdminSusunanRedaksiController extends Controller
         $theme = Theme::where('is_active',1)->first();
         $logo = Settings::where('category','logo')->first();
         // Mengambil data pengguna dikelompokkan berdasarkan title
-        $usersGroupedByTitle = User::select('id','title', 'sequence','jabatan', 'name', 'image')
-        ->orderBy('title')
-        ->whereNot('jabatan','admin')
+        $usersGroupedByTitle = User::select('id', 'title', 'sequence', 'jabatan', 'name', 'image')
+        ->whereNot('jabatan', 'admin')
+        ->orderByRaw("title = 'PIMPINAN-PUSAT' DESC") 
         ->orderBy('sequence')
         ->get()
         ->groupBy('title');
@@ -211,9 +212,8 @@ class AdminSusunanRedaksiController extends Controller
 
         $user = User::where('id',$id)->first();
 
-        $news = News::find($id);
 
-        if (!$news) {
+        if (!$user) {
             abort(404, 'News not found.');
         }
         
@@ -230,69 +230,61 @@ class AdminSusunanRedaksiController extends Controller
             }
         }
 
-        return view('admin_susunan_redaksi_form_edit', compact('usersGroupedByTitle','listed_sequences','title','theme','logo','user','news','jabatans','categories'));
+        return view('admin_susunan_redaksi_form_edit', compact('usersGroupedByTitle','listed_sequences','title','theme','logo','user','jabatans','categories'));
     }
 
-    public function update(Request $request, User $user)
-    {  
-            // Validasi request jika diperlukan
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'kategori_susunan_redaksi' => 'required|string',
-                'jabatan_susunan_redaksi' => 'required|string',
-                'image' => 'nullable|image|max:2048', // Validasi gambar jika ada
-            ]);
-        // Jika tidak ada gambar baru
+    public function update(Request $request, $id)
+    {
+        // Temukan pengguna berdasarkan ID
+        $user = User::findOrFail($id);
+    
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $id, // Validasi email untuk update
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        // Jika ada gambar baru
         if ($request->hasFile('image')) {
             // Hapus gambar lama
-            if ($user->image) {
-                Storage::disk('local')->delete('public/users/'.$user->image);
+            if ($user->image && File::exists(public_path('PORTAL-BERITA-ASSET/users/' . $user->image))) {
+                File::delete(public_path('PORTAL-BERITA-ASSET/users/' . $user->image));
             }
-
+    
             // Upload gambar baru
-            $image = $request->file('image');
-            $imageName = $image->hashName();
-            $image->storeAs('public/users', $imageName);
-
-            // Update user dengan gambar baru
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'kategori' => $request->kategori_susunan_redaksi,
-                'jabatan' => $request->jabatan_susunan_redaksi,
-                'image' => $imageName, // Update nama gambar baru
-                'title' => $request->divisi_susunan_redaksi,
-                'sequence' => $request->sequence,
-            ]);
-        } else {
-            // dd($request);
-
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->kategori = $request->kategori_susunan_redaksi;
-            $user->jabatan = $request->jabatan_susunan_redaksi;
-            $user->title = $request->divisi_susunan_redaksi;
-            $user->sequence = $request->sequence;
-
-            // Update user tanpa gambar
-            // $user->update([
-            //     'name' => $request->name,
-            //     'email' => $request->email,
-            //     'kategori' => $request->kategori_susunan_redaksi,
-            //     'jabatan' => $request->jabatan_susunan_redaksi,
-            // ]);
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension(); // Membuat nama file unik
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/users');
+            
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+    
+            // Simpan file ke folder 'public/users'
+            $file->move($destinationPath, $fileName);
+    
+            // Set nama file baru
+            $user->image = $fileName;
         }
-        
-        if($user){
-            Alert::success('Sukses', 'Data Berhasil Disimpan!');
-            return redirect()->route('admin-susunan-redaksi.index');
-        }else{
-            Alert::warning('Error', 'Data Gagal Disimpan!');
-            return redirect()->route('admin-susunan-redaksi.index');
-        }
-
+    
+        // Update informasi model dengan data dari request
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'kategori' => $request->kategori_susunan_redaksi,
+            'jabatan' => $request->jabatan_susunan_redaksi,
+            'title' => $request->divisi_susunan_redaksi,
+            'sequence' => $request->sequence,
+            'image' => $user->image, // Menyimpan nama gambar baru
+        ]);
+    
+        Alert::success('Sukses', 'Data Berhasil Di Update!');
+        return redirect()->route('admin-susunan-redaksi.index');
     }
+    
+    
 
     public function destroy($id)
     {

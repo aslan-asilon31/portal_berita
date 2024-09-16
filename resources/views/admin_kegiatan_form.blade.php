@@ -58,7 +58,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-            <h1>@yield('title') Create <i class="far fa-star"></i> </h1>
+            <h1>@yield('title') <i class="far fa-star"></i> </h1>
           </div>
           <div class="col-sm-6 d-none d-sm-block">
             <ol class="breadcrumb float-sm-right">
@@ -131,7 +131,7 @@
                                   <option value="">Wajib Pilih Tipe Kegiatan</option>
                                   @forelse($type_kegiatan as $tk)
                                       <option value="{{ $tk->id }}" >
-                                          {{ $tk->name }}
+                                          {!! $tk->name !!}
                                       </option>
                                   @empty
                                       <option value="">No data available</option>
@@ -423,7 +423,7 @@
                         var html = '<div class="col-12 col-sm-6 col-md-6">' +
                             '<div class="info-box">' +
                             '<span class="info-box-icon bg-info elevation-1">' +
-                            '<img src="{{ Storage::url('public/') }}' + product.product_image + '" style="width:70px;height:60px;">' +
+                            '<img src="{{ asset('') }}' + product.product_image + '" style="width:70px;height:60px;">' +
                             '</span>' +
                             favoriteHtml +
                             '<div class="info-box-content">' +

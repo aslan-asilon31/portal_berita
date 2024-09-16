@@ -77,7 +77,7 @@ Route::get('/publikasi',[WelcomeController::class, 'publikasi'])->name('publikas
 Route::get('/galeri-foto',[WelcomeController::class, 'galeri_foto'])->name('galeri_foto.index');
 Route::get('/galeri-video',[WelcomeController::class, 'galeri_video'])->name('galeri_video.index');
 Route::get('/infografis',[WelcomeController::class, 'infografis'])->name('infografis.index');
-Route::get('/kontak',[WelcomeController::class, 'kontak'])->name('kontak.index');
+Route::get('/mykontak',[WelcomeController::class, 'kontak'])->name('mykontak.index');
 Route::get('/susunan-redaksi',[WelcomeController::class, 'susunan_redaksi'])->name('susunan_redaksi.index');
 
 

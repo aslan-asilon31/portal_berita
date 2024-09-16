@@ -53,10 +53,9 @@
                           @if(empty($kg->image) || is_null($kg->image))
                             <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 150px"></td>
                           @else 
-                            <td><img src="{{ Storage::url('public/informasi_agenda/' . $kg->image) }}" class="rounded" style="width: 150px"></td>
+                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__agenda/' . $kg->image) }}" class="rounded" style="width: 150px"></td>
                           @endif
-                            <td>{{ $kg->name }}</td>
-                            <td>{{ $kg->desc2 }}</td>
+                            <td>{!! $kg->name !!}</td>
                             @if(!empty($kg->masterCatPost->name))
                               <td>{{ $kg->masterCatPost->name }}</td>
                               @else

@@ -11,6 +11,7 @@ use App\Models\Settings;
 use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Facades\Storage;
 

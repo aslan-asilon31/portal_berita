@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Models\Settings;
 use App\Models\Theme;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminTentangKamiController extends Controller
 {

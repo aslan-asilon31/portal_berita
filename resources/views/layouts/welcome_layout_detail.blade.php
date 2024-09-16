@@ -106,7 +106,7 @@
     <header>
         <nav class="navbar">
             <div class="navbar-left">
-                 <img src="{{asset('portal_berita/img/logo-nama-new1.png')}}" alt="" srcset="" style="width:250px;border-radius:50px;">
+                 <img src="{{asset('PORTAL-BERITA-ASSET/portal_berita/img/logo-nama-new1.png')}}" alt="" srcset="" style="width:250px;border-radius:50px;">
             </div>
             <button class="navbar-toggle" id="navbar-toggle">&#9776;</button> <!-- Toggle button -->
             <div class="navbar-right" id="navbar-right">
@@ -243,6 +243,6 @@
         </div>
     </footer>
 
-    <script src="{{asset('portal_berita/js/beranda_default.js')}}"></script>
+    <script src="{{ asset('portal_berita/js/beranda_default.js') }}"></script>
 </body>
 </html>

@@ -1,80 +1,76 @@
-@extends('layouts/auth_layout')
+@extends('layouts.layout_auth')
 
-@section('title','Login')
 @section('content')
-
-<img class="wave" src="{{asset('auth-page/img/wave-purple.svg')}}">
-    <div class="container">
-        <div class="img">
-            <img src="{{asset('auth-page/img/auth-3d-purple/1.png')}}">
-        </div>
-        <div class="login-container">
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-                <h2>@yield('title')</h2>
-                <p>Welcome !</p>
-                <div class="input-div one">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div>
-                        <input class="input form-control @error('email') is-invalid @enderror" id="email" type="email" placeholder="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                    </div>
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="input-div two">
-                    <div class="i">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <div>
-                        <input class="input form-control @error('password') is-invalid @enderror" type="password" placeholder="password" id="password" name="password" required autocomplete="current-password">
-                    </div>
-
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-
-                </div>
-                <input type="submit" class="btn" value="Login">
-                <a class="forgot" href="registration">Don't have an acount ? , Click here to Register</a>
-                <div class="others">
-                    <hr>
-                    <p>OR</p>
-                    <hr>
-                </div>
-                <div class="social" hidden>
-                    <div class="social-icons google">
-                        <a href="#"><img src="img/3d-icon/3d-icon-gmail.png">Login with Google</a>
-                    </div>
-                    <div class="social-icons facebook">
-                        <a href="#"><img src="img/3d-icon/3d-icon-facebook.png">Login with Facebook</a>
-                    </div>
-                    <div class="social-icons github">
-                        <a href="#"><img src="img/3d-icon/3d-icon-github.png">Login with Github</a>
-                    </div>
-                    <div class="social-icons twitter">
-                        <a href="#"><img src="img/3d-icon/3d-icon-twitter.png">Login with Twitter</a>
-                    </div>
-                    <div class="social-icons discord">
-                        <a href="#"><img src="img/3d-icon/3d-icon-discord.png">Login with Discord</a>
-                    </div>
-                </div>
-                <div class="account">
-                    <p>Forgot Password ?</p>
-                    @if (Route::has('password.request'))
-                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                        Click Here
-                        </a>
-                    @endif
-                </div>
-            </form>
-        </div>
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="javascript::void(0)" class="h1"><b>OC</b>R</a>
     </div>
+    <div class="card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
 
+      <form method="POST" action="{{ route('login') }}">
+      @csrf
+        <div class="input-group mb-3">
+          <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+              @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+              @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+              <label for="remember">
+                Remember Me
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">
+                {{ __('Login') }}
+            </button>
+
+
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+
+      <!-- <p class="mb-1">
+        @if (Route::has('password.request'))
+            <a class="btn btn-link" href="{{ route('password.request') }}">
+                {{ __('Forgot Your Password?') }}
+            </a>
+        @endif
+      </p> -->
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
 @endsection

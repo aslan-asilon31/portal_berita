@@ -93,7 +93,7 @@
                                     <label for="exampleInputEmail1">Nama Pengumuman</label>
                                     <input type="text" name="id" value="{{ $news->id }}" hidden>
                                     <textarea id="pengumuman_name_edit" name="pengumuman_name" class="form-control @error('pengumuman_name') is-invalid @enderror">
-                                        {{ old('name', $news->name) }}
+                                        {!! old('name', $news->name) !!}
                                     </textarea>
 
                                     @error('pengumuman_name')
@@ -119,7 +119,7 @@
                                     <label>
                                         Status 
                                         <a href="javascript::void(0)" style="font-size:13px;color:purple;text-decoration:underline;" class="" data-toggle="modal" data-target="#modal-default">
-                                            (klik disini untuk melihat penjelasan status)
+                                            (klik disini untuk melihat penjelasan status) 
                                         </a>
                                     </label>
                                     <select class="form-control" name="pengumuman_status" id="pengumuman_status" class="form-control @error('pengumuman_status') is-invalid @enderror">
@@ -176,7 +176,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-2" style="width:100%;">
-                                            <img src="{{ Storage::url('public/informasi__pengumuman/' . $news->image) }}" class="rounded" style="width: 150px">
+                                            <img src="{{ asset('informasi__pengumuman/' . $news->image) }}" class="rounded" style="width: 150px">
                                         </div>
                                     </div>
                                 @else

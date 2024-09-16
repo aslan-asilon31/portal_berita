@@ -21,7 +21,7 @@
                                     @if(empty($br->image) || is_null($br->image))
                                     <td ><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                                     @else
-                                    <td ><img src="{{ Storage::url('public/galeri__foto/'.$br->image) }}" class="rounded" style="width: 100%"></td>
+                                    <td ><img src="{{ asset('PORTAL-BERITA-ASSET/galeri__foto/'.$br->image) }}" class="rounded" style="width: 100%"></td>
 
                                     @endif
                                 </div>

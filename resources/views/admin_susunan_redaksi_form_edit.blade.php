@@ -74,143 +74,103 @@
       
       <div class="bg-white p-2" >
       <div class="row" >
-            <form action="{{route('admin-susunan-redaksi.update', $user->id)}}" method="POST" enctype="multipart/form-data" style="width:1100px;" class="">
+        <form action="{{ route('admin-susunan-redaksi.update', $user->id) }}" method="POST" enctype="multipart/form-data" style="width:1100px;">
             @csrf
             @method('PUT')
-                <div class="card card-primary ">
-                    <div class="card-body scrollable-card">
-                        <div class="col-lg-8">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Nama</label>
-                                <input type="text" placeholder="" name="id" id="id" value="{{ old('id', $user->id) }}" class="form-control @error('id') is-invalid @enderror" hidden>
-                                <input type="text" placeholder="Masukan Nama" name="name" id="" value="{{ old('name', $user->name) }}" class="form-control @error('name') is-invalid @enderror" >
-                                @error('name')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Email</label>
-                                <input type="text" placeholder="" name="email" id="" value="{{ old('email', $user->email) }}" class="form-control @error('email') is-invalid @enderror" >
-
-                                @error('email')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                              <label>Kategori</label>
-                              <select class="form-control" name="kategori_susunan_redaksi" id="kategori_susunan_redaksi" class="@error('kategori_susunan_redaksi') is-invalid @enderror">
-                                  @if($categories->isEmpty())
-                                      <option value="">tidak ada data</option>
-                                  @else
-                                      @foreach($categories as $category)
-                                          <option value="{{ $category->kategori }}" {{$category->kategori == $user->kategori ? 'selected' : ''}}>{{ $category->kategori }}</option>
-                                      @endforeach
-                                  @endif
-                              </select>
-
-                              <!-- Input for new category, initially hidden -->
-                              <div class="mt-2" id="new_kategori_container" style="display: none;">
-                                  <input type="text" class="form-control" name="new_kategori" id="new_kategori" placeholder="Masukkan kategori baru">
-                              </div>
-
-                              <!-- Button to add new category -->
-                              <a type="button" class="text-purple mt-2" id="add_category_button" hidden>Tambah Kategori Baru</a>
-
-                              @error('kategori_susunan_redaksi')
-                                  <div class="alert alert-danger mt-2">
-                                      {{ $message }}
-                                  </div>
-                              @enderror
-                            </div>
-
-                          <div class="form-group">
-                              <label>Jabatan</label>
-                              <select class="form-control" name="jabatan_susunan_redaksi" id="jabatan_susunan_redaksi" class="@error('jabatan_susunan_redaksi') is-invalid @enderror">
-                                  @if($jabatans->isEmpty())
-                                      <option value="">tidak ada data</option>
-                                  @else
-                                      @foreach($jabatans as $jbt) 
-                                          <option value="{{ $jbt->jabatan }}" {{$jbt->jabatan == $user->jabatan ? 'selected' : ''}}>{{ $jbt->jabatan }}</option>
-                                      @endforeach
-                                  @endif
-                              </select>
-
-                              <!-- Input for new jabatan, initially hidden -->
-                              <div class="mt-2" id="new_jabatan_container" style="display: none;">
-                                  <input type="text" class="form-control" name="new_jabatan" id="new_jabatan" placeholder="Masukkan jabatan baru">
-                              </div>
-
-                              <!-- Button to add new jabatan -->
-                              <a type="button" class="text-purple mt-2" id="add_jabatan_button" hidden>Tambah Jabatan Baru</a>
-
-                              @error('jabatan_susunan_redaksi')
-                                  <div class="alert alert-danger mt-2">
-                                      {{ $message }}
-                                  </div>
-                              @enderror
-                          </div>
-
-                          <div class="form-group">
-                                <label>Divisi<span class="text-red">*</span></label>
-                                <select class="form-control @error('divisi_susunan_redaksi') is-invalid @enderror" name="divisi_susunan_redaksi" id="divisi">
-                                    @foreach($usersGroupedByTitle as $title_div => $users)
-                                        <?php $cleanTitle = str_replace('-', ' ', $title_div); ?>
-                                        <option value="{{ $title_div }}" {{$title_div == $user->title ? 'selected' : ''}}>{{ $cleanTitle }}</option>
-                                    @endforeach
-                                </select>
-                                @error('divisi_susunan_redaksi')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Sequence <span class="text-red">*</span></label>
-                                <a type="button" class="btn" data-toggle="modal" data-target="#modal-sequence">
-                                    (klik informasi penting) 
-                                </a>
-                                <select class="form-control select2" name="sequence" id="sequence" disabled>
-                                    <!-- Options will be dynamically populated by JavaScript -->
-                                </select>
-                            </div>
-                
+            <div class="card card-primary ">
+                <div class="card-body scrollable-card">
+                    <div class="col-lg-8">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nama</label>
+                            <input type="text" placeholder="Masukan Nama" name="name" id="" value="{{ old('name', $user->name) }}" class="form-control @error('name') is-invalid @enderror">
+                            @error('name')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="col-lg-4">
-                          
-                          
-                          <div class="form-group" >
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email</label>
+                            <input type="text" placeholder="" name="email" id="" value="{{ old('email', $user->email) }}" class="form-control @error('email') is-invalid @enderror">
+                            @error('email')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori</label>
+                            <select class="form-control" name="kategori_susunan_redaksi" id="kategori_susunan_redaksi">
+                                @if($categories->isEmpty())
+                                    <option value="">tidak ada data</option>
+                                @else
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->kategori }}" {{ $category->kategori == $user->kategori ? 'selected' : '' }}>{{ $category->kategori }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('kategori_susunan_redaksi')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Jabatan</label>
+                            <select class="form-control" name="jabatan_susunan_redaksi" id="jabatan_susunan_redaksi">
+                                @if($jabatans->isEmpty())
+                                    <option value="">tidak ada data</option>
+                                @else
+                                    @foreach($jabatans as $jbt) 
+                                        <option value="{{ $jbt->jabatan }}" {{ $jbt->jabatan == $user->jabatan ? 'selected' : '' }}>{{ $jbt->jabatan }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('jabatan_susunan_redaksi')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Divisi<span class="text-red">*</span></label>
+                            <select class="form-control @error('divisi_susunan_redaksi') is-invalid @enderror" name="divisi_susunan_redaksi" id="divisi">
+                                @foreach($usersGroupedByTitle as $title_div => $users)
+                                    <?php $cleanTitle = str_replace('-', ' ', $title_div); ?>
+                                    <option value="{{ $title_div }}" {{ $title_div == $user->title ? 'selected' : '' }}>{{ $cleanTitle }}</option>
+                                @endforeach
+                            </select>
+                            @error('divisi_susunan_redaksi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Sequence <span class="text-red">*</span></label>
+                            <a type="button" class="btn" data-toggle="modal" data-target="#modal-sequence">(klik informasi penting)</a>
+                            <select class="form-control select2" name="sequence" id="sequence" disabled>
+                                <option value="" selected>- Pilih Sequence -</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
                             <label for="image">Masukan Gambar</label>
                             <div class="input-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="image" name="image" value="{{ old('image', $user->image) }}" accept="image/*">
+                                    <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
                                     <label class="custom-file-label" for="image">Choose file</label>
                                 </div>
                             </div>
                             <div class="mt-2">
-                                @if(empty($user->image))
-                                    <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
-                                @else
-                                    <img src="{{ Storage::url('public/users/' . $user->image) }}" class="rounded" style="width: 150px">
+                                <!-- Gambar lama -->
+                                @if(!empty($user->image))
+                                    <img id="oldImage" src="{{ asset('PORTAL-BERITA-ASSET/users/' . $user->image) }}" class="rounded" style="width: 150px;">
                                 @endif
-
+                                <!-- Preview gambar -->
+                                <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto; display: none;">
                             </div>
                         </div>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer ">
-                        <button type="submit" class="btn bg-purple text-white">Update</button>
-                        <button type="reset" class="btn btn-md btn-warning">Reset</button>
                     </div>
                 </div>
-                <!-- /.card -->
-            </form>
+                <div class="card-footer">
+                    <button type="submit" class="btn bg-purple text-white">Update</button>
+                    <button type="reset" class="btn btn-md btn-warning">Reset</button>
+                </div>
+            </div>
+        </form>
+
         </div>
       </div>
 
@@ -343,23 +303,33 @@
 
 
     <script>
-      document.getElementById('image').addEventListener('change', function(event) {
-          var input = event.target;
-          var preview = document.getElementById('imagePreview');
+        document.getElementById('image').addEventListener('change', function(event) {
+            var input = event.target;
+            var oldImage = document.getElementById('oldImage');
+            var preview = document.getElementById('imagePreview');
 
-          if (input.files && input.files[0]) {
-              var reader = new FileReader();
-              
-              reader.onload = function(e) {
-                  preview.src = e.target.result;
-                  preview.style.display = 'block';
-              }
-              
-              reader.readAsDataURL(input.files[0]);
-          } else {
-              preview.src = '{{ asset('no-image.jpg') }}';
-          }
-      });
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Sembunyikan gambar lama jika ada
+                    if (oldImage) {
+                        oldImage.style.display = 'none';
+                    }
+
+                    // Tampilkan gambar preview
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                // Jika tidak ada file yang dipilih, tampilkan gambar fallback
+                preview.src = '{{ asset('no-image.jpg') }}';
+                preview.style.display = 'block';
+            }
+        });
+
     </script>
 
     <!-- daterangepicker -->
@@ -385,54 +355,7 @@
       });
     </script>
 
-    <script>
-      // Example condition, replace this with your actual logic
-      var inventoryModuleActive = true;
-      var inventoryDashboardActive = false;
-      var inventoryProductActive = true;
-      var inventorySupplierActive = false;
-      var inventoryPurchaseActive = false;
-      var inventoryIngredientRecipeActive = false;
-      var inventoryMenuBookActive = false;
-      var inventoryCategoryActive = false;
-      var inventoryServiceProductActive = false;
-      var inventoryExtraProductActive = false;
-      var inventoryProductBundlingActive = false;
-      var inventoryDepositActive = false;
-      var inventoryOnlineVehicleActive = false;
-      var inventoryPrintBarcodeActive = false;
-
-
-      function setActive(id, isActive) {
-          var element = document.getElementById(id);
-          if (element) {
-              if (isActive) {
-                  element.classList.add('active');
-              } else {
-                  element.classList.remove('active');
-              }
-          }
-      }
-
-      // Apply the active class based on the boolean variables
-      setActive('module-inventory', inventoryModuleActive || inventoryProductListActive || inventoryProductComboActive || inventoryProductPriceActive);
-      setActive('inventory-product-list', inventoryProductActive);
-      setActive('inventory-product-combo', inventoryProductComboActive);
-      setActive('inventory-product-price', inventoryProductPriceActive);
-      setActive('inventory-supplier', inventorySupplierActive);
-      setActive('inventory-purchase', inventoryPurchaseActive);
-      setActive('inventory-ingredient-recipe', inventoryIngredientRecipeActive);
-      setActive('inventory-menu-book', inventoryMenuBookActive);
-      setActive('inventory-category', inventoryCategoryActive);
-      setActive('inventory-service-product', inventoryServiceProductActive);
-      setActive('inventory-extra-product', inventoryExtraProductActive);
-      setActive('inventory-product-bundling', inventoryProductBundlingActive);
-      setActive('inventory-deposit', inventoryDepositActive);
-      setActive('inventory-online-vehicle', inventoryOnlineVehicleActive);
-      setActive('inventory-print-barcode', inventoryPrintBarcodeActive);
-
-    </script>
-
+    <
     <script type="text/javascript">
           $(window).on('load', function() {
               $('#modal-lg').modal('hidden');
@@ -462,95 +385,6 @@
 
 
 
-                  // Event listener untuk perubahan pada select kategori
-            $('#category-filter').change(function() {
-            var categoryId = $(this).val(); // Ambil nilai dari select 
-
-
-            // Lakukan AJAX request untuk memperbarui daftar produk berdasarkan kategori yang dipilih
-            $.ajax({
-                url: '',
-                type: 'GET',
-                dataType: 'json',
-                data: { category_id: categoryId },
-                success: function(response) {
-
-                 
-                  
-                    // Handle jika tidak ada produk yang ditemukan
-                    if (response.length == 0 || response.length == null) {
-                        $('#product-list').append('<tr><td colspan="2">No products found</td></tr>');
-                        $('#kanban-container').append('<tr><td colspan="2">No products found</td></tr>');
-                    }
-
-                    // Kosongkan tbody dari tabel produk
-                    $('#product-list').empty();
-
-                    
-                    // Kosongkan kartu kanban
-                    $('#kanban-container').empty();
-
-                    
-                    // Tambahkan baris-baris baru berdasarkan data produk yang diterima
-                    $.each(response, function(index, product) {
-                        $('#product-list').append('<tr>' +
-                            '<td>' + product.product_name + '</td>' +
-                            '<td>' +
-                                '<a href="javascript:void(0)" class="btn btn-warning btn-sm text-white"><i class="fa fa-edit"></i></a> ' +
-                                '<a href="javascript:void(0)" class="btn bg-purple btn-sm"><i class="fa fa-boxes"></i></a> ' +
-                                '<a href="javascript:void(0)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> ' +
-                            '</td>' +
-                            '</tr>');
-                    });
-
-
-
-
-                        // Tambahkan kartu kanban baru berdasarkan data produk yang diterima
-                    $.each(response, function(index, product) {
-                        var favoriteHtml = '';
-                        if (product.is_favorite) {
-                            favoriteHtml = '<div class="ribbon-wrapper"><div class="ribbon bg-danger">Favorite</div></div>';
-                        }
-                        
-                        var html = '<div class="col-12 col-sm-6 col-md-6">' +
-                            '<div class="info-box">' +
-                            '<span class="info-box-icon bg-info elevation-1">' +
-                            '<img src="{{ Storage::url('public/') }}' + product.product_image + '" style="width:70px;height:60px;">' +
-                            '</span>' +
-                            favoriteHtml +
-                            '<div class="info-box-content">' +
-                            '<span class="info-box-text">' + product.product_name + '</span>' +
-                            '<span class="info-box-number">' +
-                            'Harga : Rp ' + formatNumber(product.price_selling_after) + '&nbsp;&nbsp;' +
-                            'Stock : ' + (product.inventory_amount ?? 0) + '&nbsp;&nbsp;' +
-                            'Order : ' + (product.prod_amount ?? 0) + ' Kali' +
-                            '</span>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
-                        
-                        $('#kanban-container').append(html);
-                    });
-                    
-
-                },
-                error: function(xhr, status, error) {
-
-                  
-                    // Kosongkan tbody dari tabel produk
-                    $('#product-list').empty();
-
-                    
-                    // Kosongkan kartu kanban
-                    $('#kanban-container').empty();
-
-
-                    console.error(xhr.responseText);
-                    // Handle error jika terjadi
-                }
-            });
-        });
 
 
 
@@ -603,4 +437,7 @@
         divisiSelect.dispatchEvent(new Event('change'));
     });
 </script>
+
+
+
   @endpush

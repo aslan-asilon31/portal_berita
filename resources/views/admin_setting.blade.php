@@ -104,7 +104,7 @@
                             <span class="input-group-text">Upload</span>
                           </div>
                         </div>
-                        <img id="logoPreview" src="{{ Storage::url('public/website-information/' . $logo->image) }}" alt="Logo Preview">
+                        <img id="logoPreview" src="{{ asset('website-information/' . $logo->image) }}" alt="Logo Preview">
                       </div>
                      
                     </div>
@@ -152,7 +152,7 @@
                       <tbody>
                         @foreach($social_medias as $sm)
                         <tr>
-                          <td>{{$sm->name}}</td>
+                          <td>{!!$sm->name!!}</td>
                           <td>
                             <img style="width: 50px;" src="{{$sm->image}}" alt="Facebook Logo" class="facebook-logo">
                           </td>
@@ -222,7 +222,7 @@
                                 <button type="submit" class="btn bg-dark">Update</button>
                               </form>
                               <div class="" style="width: 100%;overflow: hidden;">
-                                <img src="{{ Storage::url('public/website-information/' . $banner->image) }}" alt="user-avatar" class=" img-fluid" style="width: 100%; object-fit: cover;">
+                                <img src="{{ asset('website-information/' . $banner->image) }}" alt="user-avatar" class=" img-fluid" style="width: 100%; object-fit: cover;">
                               </div>
                               
                             </div>

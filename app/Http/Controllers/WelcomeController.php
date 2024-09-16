@@ -11,6 +11,8 @@ use App\Models\Settings;
 use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
 
 use Illuminate\Support\Facades\Storage;
 
@@ -217,7 +219,7 @@ class WelcomeController extends Controller
     }
         
     public function kontak(){
-                $social_medias = Settings::where('category','social-media')->get();
+        $social_medias = Settings::where('category','social-media')->get();
         $berita_kategori = MasterTypePost::all();
         $logo = Settings::where('category','logo')
         ->first();
@@ -244,13 +246,13 @@ class WelcomeController extends Controller
         $berita_kategori = MasterTypePost::all();
         $logo = Settings::where('category','logo')->first();
 
-        $usersGroupedByTitle = User::select('id','title', 'sequence', 'name', 'image', 'jabatan')
-        ->orderBy('title')
-        ->whereNot('title', 'admin')
-        ->whereNot('jabatan', null)
+        $usersGroupedByTitle = User::select('id', 'title', 'sequence', 'jabatan', 'name', 'image')
+        ->whereNot('jabatan', 'admin')
+        ->orderByRaw("title = 'PIMPINAN-PUSAT' DESC") 
         ->orderBy('sequence')
         ->get()
         ->groupBy('title');
+        
 
         return view('susunan_redaksi', compact('social_medias','berita_kategori','logo','usersGroupedByTitle'));
     }

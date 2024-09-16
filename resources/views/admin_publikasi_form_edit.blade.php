@@ -93,7 +93,7 @@
                                     <label for="exampleInputEmail1">Nama publikasi</label>
                                     <input type="text" name="id" value="{{ $news->id }}" hidden>
                                     <textarea id="publikasi_name" name="publikasi_name" class="form-control @error('publikasi_name') is-invalid @enderror">
-                                        {{ old('name', $news->name) }}
+                                        {!! old('name', $news->name) !!}
                                     </textarea>
 
                                     @error('publikasi_name')

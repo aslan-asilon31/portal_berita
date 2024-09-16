@@ -12,6 +12,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 
 class AdminBeritaController extends Controller
@@ -42,23 +43,34 @@ class AdminBeritaController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
-        // $request->validate([
-        //     'berita_name' => 'nullable',
-        //     'berita_status' => 'nullable',
-        //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        // ]);
 
+        
         //upload image
-        $image = $request->file('image');
-        $image->storeAs('public/informasi__berita', $image->hashName());
+        // Ambil file dari request
+        $file = $request->file('image');
+        $originalFileName = $file->getClientOriginalName();
+
+        // Tentukan lokasi tujuan di dalam folder 'public'
+        $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__berita');
+
+        // Pastikan folder tujuan ada
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        // Simpan file ke folder 'public/informasi__berita'
+        $fileName = $file->getClientOriginalName();
+        $file->move($destinationPath, $fileName);
+
+        // Mengembalikan URL untuk akses gambar
+        $fileUrl = url('PORTAL-BERITA-ASSET/informasi__berita/' . $fileName);
+        //upload image end
+
 
         // Ambil nilai reservationtime
-      
-
         $news = News::create([
             'cat_post_id'   => $request->berita_status,
-            'image'     => $image->hashName(),
+            'image'     => $originalFileName,
             'name'     => $request->berita_name,
             'desc2'   => $request->berita_detail,
             'berita_type'   => $request->type_news_id,
@@ -134,15 +146,40 @@ class AdminBeritaController extends Controller
 
         } else {
 
+
             //hapus old image
-            Storage::disk('local')->delete('public/informasi__berita/'.$news->image);
+            $filePath = public_path('PORTAL-BERITA-ASSET/informasi__berita/' . $news->image);
+
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+            //hapus old image end
 
             //upload new image
-            $image = $request->file('image');
-            $image->storeAs('public/informasi__berita', $image->hashName());
+                //upload image
+                // Ambil file dari request
+                $file = $request->file('image');
+                $originalFileName = $file->getClientOriginalName();
 
+                // Tentukan lokasi tujuan di dalam folder 'public'
+                $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__berita');
+
+                // Pastikan folder tujuan ada
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                // Simpan file ke folder 'public/informasi__berita'
+                $fileName = $file->getClientOriginalName();
+                $file->move($destinationPath, $fileName);
+
+                // Mengembalikan URL untuk akses gambar
+                $fileUrl = url('informasi__berita/' . $fileName);
+            //upload image end
+
+            
             $news->update([
-                'image'     => $image->hashName(),
+                'image'     => $originalFileName,
                 'cat_post_id'   => $request->berita_status,
                 'name'     => $request->berita_name,
                 'status'   => $request->berita_status,
@@ -182,7 +219,14 @@ class AdminBeritaController extends Controller
     public function destroy($id)
     {
         $news = News::findOrFail($id);
-        Storage::disk('local')->delete('public/informasi__berita/'.$news->image);
+        // Tentukan path file yang akan dihapus
+        $filePath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $news->image);
+
+        // Hapus file jika ada
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+
         $news->delete();
 
         if($news){

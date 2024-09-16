@@ -10,6 +10,8 @@ use App\Models\MasterTypePost;
 use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
 use App\Models\Settings;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,8 +50,25 @@ class AdminInfografisController extends Controller
         ]);
 
         //upload image
-        $image = $request->file('image');
-        $image->storeAs('public/informasi__infografis', $image->hashName());
+            // Ambil file dari request
+            $file = $request->file('image');
+            $originalFileName = $file->getClientOriginalName();
+
+            // Tentukan lokasi tujuan di dalam folder 'public'
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/galeri__infografis');
+
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Simpan file ke folder 'public/galeri__infografis'
+            $fileName = $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
+
+            // Mengembalikan URL untuk akses gambar
+            $fileUrl = url('PORTAL-BERITA-ASSET/galeri__infografis/' . $fileName);
+        //upload image end
 
         // Ambil nilai reservationtime
         $reservationTime = $request->input('reservationtime');

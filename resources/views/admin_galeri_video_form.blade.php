@@ -364,7 +364,7 @@
                         var html = '<div class="col-12 col-sm-6 col-md-6">' +
                             '<div class="info-box">' +
                             '<span class="info-box-icon bg-info elevation-1">' +
-                            '<img src="{{ Storage::url('public/') }}' + product.product_image + '" style="width:70px;height:60px;">' +
+                            '<img src="{{ asset('') }}' + product.product_image + '" style="width:70px;height:60px;">' +
                             '</span>' +
                             favoriteHtml +
                             '<div class="info-box-content">' +

@@ -88,7 +88,7 @@
                                    @foreach($users as $user)
                                      <tr>
                                        <td>{{ $user->sequence }}</td>
-                                       <td>{{ $user->name }}</td>
+                                       <td>{!! $user->name !!}</td>
                                        <td>{{ $user->jabatan }}</td>
                                        <td>
                                          <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('admin-susunan-redaksi.destroy', $user->id) }}" method="POST">

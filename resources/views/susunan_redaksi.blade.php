@@ -72,11 +72,11 @@
                                    @foreach($users as $user)
                                      <tr>
                                         @if(empty($user->image) || is_null($user->image))
-                                          <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 150px"></td>
+                                          <td><img src="{{ asset('PORTAL-BERITA-ASSET/users/id-card-blank.jpeg') }}" class="rounded" style="width: 150px"></td>
                                         @else 
-                                        <td><img src="{{ Storage::url('public/users/' . $user->image) }}" class="rounded" style="width: 150px"></td>
+                                        <td><img src="{{ asset('PORTAL-BERITA-ASSET/users/'.$user->image) }}" class="rounded" style="width: 150px"></td>
                                         @endif 
-                                       <td>{{ $user->name }}</td>
+                                       <td>{!! $user->name !!}</td>
 
                                        @if(empty($user->jabatan) || is_null($user->jabatan))
                                        <td>tidak ada</td>

@@ -93,7 +93,7 @@
                                     <label for="exampleInputEmail1">Nama Kegiatan</label>
                                     <input type="text" name="id" value="{{ $news->id }}" hidden>
                                     <textarea id="kegiatan_name" name="kegiatan_name" class="form-control @error('kegiatan_name') is-invalid @enderror">
-                                        {{ old('name', $news->name) }}
+                                        {!! old('name', $news->name) !!}
                                     </textarea>
 
                                     @error('kegiatan_name')
@@ -195,7 +195,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-2" style="width:100%;">
-                                            <img src="{{ Storage::url('public/informasi__kegiatan/'.$news->image) }}" class="rounded" style="width: 150px">
+                                            <img src="{{ asset('informasi__kegiatan/'.$news->image) }}" class="rounded" style="width: 150px">
                                         </div>
                                     </div>
                                 @else
