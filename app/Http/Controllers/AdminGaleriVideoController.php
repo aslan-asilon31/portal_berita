@@ -50,7 +50,6 @@ class AdminGaleriVideoController extends Controller
             'video_link' => 'nullable',
         ]);
 
-      
         $news = News::create([
             'name'     => $request->video_name,
             'status'   => $request->video_status,
@@ -77,15 +76,15 @@ class AdminGaleriVideoController extends Controller
         $logo = Settings::where('category','logo')->first();
 
         $news = News::find($id);
+
         if (!$news) {
             abort(404, 'News not found.');
         }
-
             
         return view('admin_galeri_video_form_edit', compact('theme','logo','news'));
     }
 
-    public function update(Request $request, News $news)
+    public function update(Request $request,$id)
     {   
 
         // Cari data berdasarkan ID

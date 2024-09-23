@@ -116,25 +116,25 @@
                     <li class="submenu {{ request()->routeIs('tentang_kami.index') ? 'active' : '' }} {{ request()->routeIs('visi_misi.index') ? 'active' : '' }} {{ request()->routeIs('tujuan.index') ? 'active' : '' }}">
                         <a href="#">Tentang</a>
                         <ul class="submenu-items">
-                            <li class="{{ request()->routeIs('tentang_kami.index') ? 'active' : '' }}"><a href="tentang-kami">Tentang Kami</a></li>
-                            <li class="{{ request()->routeIs('visi_misi.index') ? 'active' : '' }}"><a href="visi-misi">Visi & Misi</a></li>
-                            <li class="{{ request()->routeIs('tujuan.index') ? 'active' : '' }}"><a href="tujuan">Tujuan</a></li>
+                            <li class="{{ request()->routeIs('tentang_kami.index') ? 'active' : '' }}"><a href="/tentang-kami">Tentang Kami</a></li>
+                            <li class="{{ request()->routeIs('visi_misi.index') ? 'active' : '' }}"><a href="/visi-misi">Visi & Misi</a></li>
+                            <li class="{{ request()->routeIs('tujuan.index') ? 'active' : '' }}"><a href="/tujuan">Tujuan</a></li>
                         </ul>
                     </li>
                     <li class="submenu {{ request()->routeIs('agenda.index') ? 'active' : '' }} {{ request()->routeIs('berita.index') ? 'active' : '' }} {{ request()->routeIs('kegiatan.index') ? 'active' : '' }} {{ request()->routeIs('pengumuman.index') ? 'active' : '' }}">
                         <a href="#">Informasi</a>
                         <ul class="submenu-items">
                             <li class="{{ request()->routeIs('agenda.index') ? 'active' : '' }}">
-                                <a href="{{ route('agenda.index') }}">Agenda</a>
+                                <a href="/agenda">Agenda</a>
                             </li>
                             <li class="{{ request()->routeIs('berita.index') ? 'active' : '' }}">
-                                <a href="{{ route('berita.index') }}">Berita</a>
+                                <a href="/berita">Berita</a>
                             </li>
                             <li class="{{ request()->routeIs('kegiatan.index') ? 'active' : '' }}">
-                                <a href="{{ route('kegiatan.index') }}">Kegiatan</a>
+                                <a href="/kegiatan">Kegiatan</a>
                             </li>
                             <li class="{{ request()->routeIs('pengumuman.index') ? 'active' : '' }}">
-                                <a href="{{ route('pengumuman.index') }}">Pengumuman</a>
+                                <a href="/pengumuman">Pengumuman</a>
                             </li>
                         </ul>
                     </li>
@@ -143,14 +143,13 @@
                     <li class="submenu {{ request()->routeIs('galeri_foto.index') ? 'active' : '' }} {{ request()->routeIs('galeri_video.index') ? 'active' : '' }} {{ request()->routeIs('infografis.index') ? 'active' : '' }}">
                         <a href="#">Galeri</a>
                         <ul class="submenu-items">
-                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="galeri-foto">Galeri Foto</a></li>
-                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="galeri-video">Galeri Video</a></li>
-                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"><a href="infografis">Infografis</a></li>
+                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="/galeri-foto">Galeri Foto</a></li>
+                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="/galeri-video">Galeri Video</a></li>
+                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"><a href="/infografis">Infografis</a></li>
                         </ul>
                     </li>
-                    <li   class="{{ request()->routeIs('kontak.index') ? 'active' : '' }}"><a href="kontak">Kontak</a></li>
-                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="susunan-redaksi">Susunan Redaksi</a></li>
-                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="login">Login</a></li>
+                    <li   class="{{ request()->routeIs('kontak.index') ? 'active' : '' }}"><a href="/kontak">Kontak</a></li>
+                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="/susunan-redaksi">Susunan Pengurus</a></li>
                 </ul>
             </div>
         </nav>

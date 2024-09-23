@@ -166,9 +166,8 @@
 
                             </div>
                             <div class="col-lg-4">
-                                @if($news->image)
                                     <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
+                                        <label for="image">Masukan Gambar </label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" value="{{ old('image', $news->image) }}" id="image" name="image" accept="image/*">
@@ -176,23 +175,10 @@
                                             </div>
                                         </div>
                                         <div class="mt-2" style="width:100%;">
-                                            <img src="{{ asset('informasi__pengumuman/' . $news->image) }}" class="rounded" style="width: 150px">
+                                            <img src="{{ $news->image ? asset('informasi__pengumuman/' . $news->image) : asset('no-image.jpg') }}" class="rounded" style="width: 150px">
                                         </div>
                                     </div>
-                                @else
-                                    <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-                                                <label class="custom-file-label" for="image">Choose file</label>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
-                                        </div>
-                                    </div>
-                                @endif
+                               
                             </div>
                         </div>
                     </div>

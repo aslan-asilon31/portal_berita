@@ -228,7 +228,7 @@ class WelcomeController extends Controller
     }
         
     public function galeri_video(){
-                $social_medias = Settings::where('category','social-media')->get();
+        $social_medias = Settings::where('category','social-media')->get();
         $berita_kategori = MasterTypePost::all();
         $logo = Settings::where('category','logo')
         ->first();

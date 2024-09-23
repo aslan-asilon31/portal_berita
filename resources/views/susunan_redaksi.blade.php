@@ -1,6 +1,6 @@
 @extends('layouts/welcome_layout')
 
-@section('title','Susunan Redaksi')
+@section('title','Susunan Pengurus')
 @section('content')
 
   <!-- Google Font: Source Sans Pro -->

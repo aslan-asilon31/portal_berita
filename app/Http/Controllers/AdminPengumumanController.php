@@ -62,7 +62,6 @@ class AdminPengumumanController extends Controller
                         mkdir($destinationPath, 0755, true);
                     }
 
-                    // Simpan file ke folder 'public/informasi__pengumuman'
                     $fileName = $file->getClientOriginalName();
                     $file->move($destinationPath, $fileName);
 
@@ -118,7 +117,7 @@ class AdminPengumumanController extends Controller
 
     public function update(Request $request, $id)
     {   
-
+        
         $news = News::find($id);
 
         // Pastikan data ditemukan
@@ -126,37 +125,47 @@ class AdminPengumumanController extends Controller
             return redirect()->back()->withErrors(['msg' => 'Data berita tidak ditemukan.']);
         }
 
-            $pengumuman_names = $request->pengumuman_name; // Ambil nilai dari request
-            $cleaned_pengumuman_name = preg_replace('/<\/?p>|<br\s*\/?>/', '', $pengumuman_names);
-
         if($request->file('image') == "") {
 
             $news->update([
-                'name'     => $cleaned_pengumuman_name,
-                'desc2'     => $pengumuman_detail,
+                'name'     => $request->pengumuman_name,
+                'desc2'     => $request->pengumuman_detail,
                 'cat_post_id' => $request->pengumuman_status,
                 'status'   => $request->pengumuman_status,
-                'start_date'   => $request->startDateTime,
-                'end_date'   => $request->endDateTime,
+                'start_date'   => $request->start_date,
+                'end_date'   => $request->end_date,
                 'category'   => 'pengumuman'
             ]);
 
         } else {
-
-            //hapus old image
-            Storage::disk('local')->delete('public/informasi__pengumuman/'.$news->image);
-
-            //upload new image
-            $image = $request->file('image');
-            $image->storeAs('public/informasi__pengumuman', $image->hashName());
+            // Hapus gambar lama
+            if ($news->image && File::exists(public_path('PORTAL-BERITA-ASSET/informasi__pengumuman/' . $news->image))) {
+                File::delete(public_path('PORTAL-BERITA-ASSET/informasi__pengumuman/' . $news->image));
+            }
+    
+            // Upload gambar baru
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension(); // Membuat nama file unik
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__pengumuman');
+            
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+    
+            // Simpan file ke folder 'public/users'
+            $file->move($destinationPath, $fileName);
+    
+            // Set nama file baru
+            $news->image = $fileName;
 
             $news->update([
-                'image'     => $image->hashName(),
+                'image'     =>  $news->image,
                 'name'     => $request->pengumuman_name,
                 'cat_post_id' => $request->pengumuman_status,
                 'status'   => $request->pengumuman_status,
-                'start_date'   => $request->startDateTime,
-                'end_date'   => $request->endDateTime,
+                'start_date'   => $request->start_date,
+                'end_date'   => $request->end_date,
                 'category'   => 'pengumuman'
             ]);
 

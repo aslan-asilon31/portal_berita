@@ -74,31 +74,31 @@
                     <li class="submenu {{ request()->routeIs('tentang_kami.index') ? 'active' : '' }} {{ request()->routeIs('visi_misi.index') ? 'active' : '' }} {{ request()->routeIs('tujuan.index') ? 'active' : '' }}">
                         <a href="#">Tentang</a>
                         <ul class="submenu-items">
-                            <li class="{{ request()->routeIs('tentang_kami.index') ? 'active' : '' }}"><a href="tentang-kami">Tentang Kami</a></li>
-                            <li class="{{ request()->routeIs('visi_misi.index') ? 'active' : '' }}"><a href="visi-misi">Visi & Misi</a></li>
-                            <li class="{{ request()->routeIs('tujuan.index') ? 'active' : '' }}"><a href="tujuan">Tujuan</a></li>
+                            <li class="{{ request()->routeIs('tentang_kami.index') ? 'active' : '' }}"><a href="/tentang-kami">Tentang Kami</a></li>
+                            <li class="{{ request()->routeIs('visi_misi.index') ? 'active' : '' }}"><a href="/visi-misi">Visi & Misi</a></li>
+                            <li class="{{ request()->routeIs('tujuan.index') ? 'active' : '' }}"><a href="/tujuan">Tujuan</a></li>
                         </ul>
                     </li>
                     <li class="submenu {{ request()->routeIs('agenda.index') ? 'active' : '' }} {{ request()->routeIs('berita.index') ? 'active' : '' }} {{ request()->routeIs('kegiatan.index') ? 'active' : '' }} {{ request()->routeIs('pengumuman.index') ? 'active' : '' }}">
                         <a href="#">Informasi</a>
                         <ul class="submenu-items">
-                            <li class="{{ request()->routeIs('agenda.index') ? 'active' : '' }}"><a href="{{ route('agenda.index') }}">Agenda</a></li>
-                            <li class="{{ request()->routeIs('berita.index') ? 'active' : '' }}"><a href="{{ route('berita.index') }}" class=" ">Berita</a></li>
-                            <li class="{{ request()->routeIs('kegiatan.index') ? 'active' : '' }}"><a href="{{ route('kegiatan.index') }}">Kegiatan</a></li>
-                            <li class="{{ request()->routeIs('pengumuman.index') ? 'active' : '' }}"><a href="{{ route('pengumuman.index') }}">Pengumuman</a></li>
+                            <li class="{{ request()->routeIs('agenda.index') ? 'active' : '' }}"><a href="/agenda">Agenda</a></li>
+                            <li class="{{ request()->routeIs('berita.index') ? 'active' : '' }}"><a href="/berita" class=" ">Berita</a></li>
+                            <li class="{{ request()->routeIs('kegiatan.index') ? 'active' : '' }}"><a href="/kegiatan">Kegiatan</a></li>
+                            <li class="{{ request()->routeIs('pengumuman.index') ? 'active' : '' }}"><a href="/pengumuman">Pengumuman</a></li>
                         </ul>
                     </li>
-                    <li  class="{{ request()->routeIs('publikasi.index') ? 'active' : '' }}"><a href="publikasi">Publikasi</a></li>
+                    <li  class="{{ request()->routeIs('publikasi.index') ? 'active' : '' }}"><a href="/publikasi">Publikasi</a></li>
                     <li class="submenu {{ request()->routeIs('galeri_foto.index') ? 'active' : '' }} {{ request()->routeIs('galeri_video.index') ? 'active' : '' }} {{ request()->routeIs('infografis.index') ? 'active' : '' }}">
                         <a href="#">Galeri</a>
                         <ul class="submenu-items">
-                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="{{route('galeri_foto.index')}}">Galeri Foto</a></li>
-                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="{{route('galeri_video.index')}}">Galeri Video</a></li>
-                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"hidden><a href="{{route('infografis.index')}}">Infografis</a></li>
+                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="/galeri-foto/">Galeri Foto</a></li>
+                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="/galeri-video">Galeri Video</a></li>
+                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"hidden><a href="/infografis">Infografis</a></li>
                         </ul>
                     </li>
-                    <li   class="{{ request()->routeIs('mykontak.index') ? 'active' : '' }}"><a href="{{route('mykontak.index')}}">Kontak</a></li>
-                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="{{route('susunan_redaksi.index')}}">Susunan Pengurus</a></li>
+                    <li   class="{{ request()->routeIs('mykontak.index') ? 'active' : '' }}"><a href="/mykontak">Kontak</a></li>
+                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="/susunan-redaksi">Susunan Pengurus</a></li>
                 </ul>
             </div>
         </nav>

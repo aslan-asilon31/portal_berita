@@ -113,10 +113,30 @@ class AdminSusunanRedaksiController extends Controller
         if ($request->hasFile('image')) {
             //upload image
             $image = $request->file('image');
-            $image->storeAs('public/users', $image->hashName());
+
+            // Upload gambar baru
+            $file = $request->file('image');
+
+            // Buat user baru
+            $user = new User(); // Inisialisasi objek User
+    
+            $fileName = time() . '.' . $file->getClientOriginalExtension(); // Membuat nama file unik
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/users');
             
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+    
+            // Simpan file ke folder 'public/users'
+            $file->move($destinationPath, $fileName);
+    
+            // Set nama file baru
+            $user->image = $fileName;
+
+
             $users = User::create([
-                'image'     => $image->hashName(),
+                'image'     => $user->image,
                 'name'     => $request->name,
                 'email'     => $request->email,
                 'kategori'   => 'pimpinan-redaksi',

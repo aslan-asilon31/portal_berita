@@ -81,120 +81,61 @@
 
       
       <div class="bg-white p-2" >
-      <div class="row" >
-            <form action="{{route('admin-agenda.update', $news->id)}}" method="POST" enctype="multipart/form-data" style="width:1100px;" class="">
-            @csrf
-            @method('PUT')
-                <div class="card card-primary ">
-                    <div class="card-body scrollable-card">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Nama agenda</label>
-                                    <input type="text" name="id" value="{{ $news->id }}" hidden>
-                                    <textarea id="agenda_name" name="agenda_name" class="form-control @error('agenda_name') is-invalid @enderror">
-                                        {!! old('name', $news->name) !!}
-                                    </textarea>
-
-                                    @error('agenda_name')
-                                        <div class="alert alert-danger mt-2">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label>
-                                        Status 
-                                        <a href="javascript::void(0)" style="font-size:13px;color:purple;text-decoration:underline;" class="" data-toggle="modal" data-target="#modal-default">
-                                            (klik disini untuk melihat penjelasan status)
-                                        </a>
-                                    </label>
-                                    <select class="form-control" name="agenda_status" id="agenda_status" class="form-control @error('agenda_status') is-invalid @enderror">
-                                        <option value="1" {{ $news->status == 1 ? 'selected' : '' }}>Publish</option>
-                                        <option value="2" {{ $news->status == 2 ? 'selected' : '' }}>Pending Review</option>
-                                        <option value="8" {{ $news->status == 8 ? 'selected' : '' }}>Hidden</option>
-                                        <option value="9" {{ $news->status == 9 ? 'selected' : '' }}>Draft</option>
-                                    </select>
-
-                                    @error('agenda_status')
-                                        <div class="alert alert-danger mt-2">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-12 d-flex">
-                                  <div class="col-lg-6">
-                                      <div class="form-group ">
-                                        <label>Waktu @yield('title') mulai </label>
-                                        <div class="input-group">
-                                          <div class="input-group date date-input" id="reservationdatetime_start" data-target-input="nearest">
-                                              <input type="text" name="start_date" value="{{ $news->start_date }}" class="form-control datetimepicker-input " data-target="#reservationdatetime_start"/>
-                                              <div class="input-group-append" data-target="#reservationdatetime_start" data-toggle="datetimepicker">
-                                                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                              </div>
-                                          </div>
-                                        </div>
-                                      </div>
+        <div class="row" >
+          <form action="{{ route('admin-galeri-video.update', $news->id) }}" method="POST" enctype="multipart/form-data" style="width:900px;" class="">
+              @csrf
+              @method('PUT') <!-- Tambahkan ini untuk mengindikasikan bahwa ini adalah request update -->
+              <div class="card card-primary">
+                  <div class="card-body scrollable-card">
+                      <div class="col-lg-8">
+                          <div class="form-group">
+                              <label for="video_name">Nama video</label>
+                              <input type="text" name="id" value="{{ old('id', $news->id) }}" hidden>
+                              <textarea id="video_name" name="video_name" class="form-control @error('video_name') is-invalid @enderror">{{ old('name', $news->name) }}</textarea>
+                              
+                              @error('video_name')
+                                  <div class="alert alert-danger mt-2">{{ $message }}</div>
+                              @enderror
+                          </div>
+                          <div class="form-group">
+                              <label>Status 
+                                  <a href="javascript:void(0)" style="font-size:13px;color:purple;text-decoration:underline;" data-toggle="modal" data-target="#modal-default">
+                                      (klik disini untuk melihat penjelasan status)
+                                  </a>
+                              </label>
+                              <select class="form-control @error('video_status') is-invalid @enderror" name="video_status" id="video_status">
+                                  <option value="1" {{ $news->status == 1 ? 'selected' : '' }}>Publish</option>
+                                  <option value="2" {{ $news->status == 2 ? 'selected' : '' }}>Pending Review</option>
+                                  <option value="8" {{ $news->status == 8 ? 'selected' : '' }}>Hidden</option>
+                                  <option value="9" {{ $news->status == 9 ? 'selected' : '' }}>Draft</option>
+                              </select>
+                              
+                              @error('video_status')
+                                  <div class="alert alert-danger mt-2">{{ $message }}</div>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-lg-4">
+                          <div class="form-group">
+                              <label for="video_link">Masukkan link video</label>
+                              <div class="input-group">
+                                  <input type="text" class="form-control float-right @error('video_link') is-invalid @enderror" id="video_link" name="video_link" value="{{ old('video', $news->video) }}">
+                              </div>
+                              <div class="mt-2" style="width: 100px !important; height: auto;">
+                                  <div id="videoPreview">
+                                      <!-- Preview iframe will be inserted here -->
                                   </div>
-                                  <div class="col-lg-6">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-footer">
+                      <button type="submit" class="btn bg-purple text-white">Update</button>
+                      <button type="reset" class="btn btn-md btn-warning">Reset</button>
+                  </div>
+              </div>
+          </form>
 
-                                    <div class="form-group ">
-                                      <label>Waktu @yield('title') berakhir </label>
-                                      <div class="input-group">
-                                          <div class="input-group date date-input" id="reservationdatetime_end" data-target-input="nearest">
-                                              <input type="text" name="end_date" value="{{ $news->end_date }}" class="form-control datetimepicker-input " data-target="#reservationdatetime_end"/>
-                                              <div class="input-group-append" data-target="#reservationdatetime_end" data-toggle="datetimepicker">
-                                                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                </div>
-                                
-
-                            </div>
-                            <div class="col-lg-4">
-                                @if($news->image)
-                                    <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" value="{{ old('image', $news->image) }}" id="image" name="image" accept="image/*">
-                                                <label class="custom-file-label" for="image">Choose file</label>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2" style="width:100%;">
-                                            <img src="{{ asset('informasi_agenda/' . $news->image) }}" class="rounded" style="width: 150px">
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-                                                <label class="custom-file-label" for="image">Choose file</label>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- /.card-body -->
-                    <div class="card-footer ">
-                        <button type="submit" class="btn bg-purple text-white">Submit</button>
-                        <button type="reset" class="btn btn-md btn-warning">Reset</button>
-                    </div>
-                </div>
-                <!-- /.card -->
-            </form>
         </div>
       </div>
 

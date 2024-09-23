@@ -45,7 +45,7 @@
                         @if(empty($news->image) || is_null($news->image))
                             <td><img src="{{ asset('no-image.jpg') }}" class="rounded" style="width: 100%"></td>
                             @else 
-                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi_pengumuman/' . $news->image) }}" class="rounded" style="width: 100%"></td>
+                            <td><img src="{{ asset('PORTAL-BERITA-ASSET/informasi__pengumuman/' . $news->image) }}" class="rounded" style="width: 100%"></td>
                         @endif 
                     @elseif($types == 'kegiatan')
                         @if(!empty($news->image))

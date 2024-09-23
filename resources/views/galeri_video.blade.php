@@ -14,26 +14,36 @@
         <section class="news">
             <div class="row">
                 @forelse($galeri_video as $br)
-                    <div class="card">
-                        <a href="">
+                    <div class="">
+                        <a href="{{ $br->video }}" style="text-align:center; text-decoration:none;">
                             <div class="news-item">
                                 <div class="news-image">
                                 <td>
-                                    @php
-                                    // Extract video ID from the YouTube URL
-                                    $youtubeUrl = $br->video;
-                                    parse_str(parse_url($youtubeUrl, PHP_URL_QUERY), $queryParams);
-                                    $videoId = $queryParams['v'] ?? '';
+                                @php
+                                // Ambil URL video dari database
+                                $videoUrl = $br->video; // Misalnya ini adalah URL video yang diberikan
 
-                                    // Construct the embed URL
-                                    $embedUrl = $videoId ? "https://www.youtube.com/embed/{$videoId}" : '';
-                                    @endphp
+                                // Variabel untuk menyimpan embed URL
+                                $embedUrl = '';
+
+                                // Cek jika URL berasal dari YouTube
+                                if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoUrl, $matches)) {
+                                    $videoId = $matches[1];
+                                    $embedUrl = "https://www.youtube.com/embed/{$videoId}";
+                                }
+                                // Cek jika URL berasal dari Instagram
+                                elseif (preg_match('/\/(?:reel|p)\/([^\/]+)/', $videoUrl, $matches)) {
+                                    $shortcode = $matches[1];
+                                    $embedUrl = "https://instagram.com/p/{$shortcode}/embed";
+                                }
+
+                                @endphp
 
                                     @if($embedUrl)
-                                        <div class="video-container" >
+                                        <div class="video-container " >
                                             <iframe 
-                                                width="360" 
-                                                height="115" 
+                                                width="245" 
+                                                height="138" 
                                                 src="{{ $embedUrl }}" 
                                                 frameborder="0" 
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -41,12 +51,13 @@
                                             </iframe>
                                         </div>
                                     @else
-                                        <a href="{{ $br->video }}" target="_blank">Watch Video</a>
+                                        <p>tidak ada video</p>
                                     @endif
 
                                 </td>
                                 </div>
                             </div>
+                            <p style="margin: 10px 0 0 0; width: 245px;"> {!! $br->name !!} </p>
                         </a>
                     </div>
                 @empty

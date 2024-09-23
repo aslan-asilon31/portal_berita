@@ -253,7 +253,7 @@
             <a href="{{route('admin-susunan-redaksi.index')}}" class="nav-link text-white {{ request()->routeIs('admin-susunan-redaksi.index') || request()->routeIs('admin-susunan-redaksi.create') || request()->routeIs('admin-susunan-redaksi.edit') ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
               <p>
-                susunan redaksi
+                susunan pengurus
               </p>
             </a>
           </li>

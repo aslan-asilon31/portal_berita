@@ -15,7 +15,7 @@
             <div class="row">
                 @forelse($galeri_foto as $br)
                     <div class="card">
-                        <a href="">
+                        <a href="" style="text-align:center;text-decoration:none;">
                             <div class="news-item">
                                 <div class="news-image">
                                     @if(empty($br->image) || is_null($br->image))
@@ -25,6 +25,7 @@
 
                                     @endif
                                 </div>
+                                <p>{!! $br->name !!} </p>
                             </div>
                         </a>
                     </div>
