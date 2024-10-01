@@ -68,68 +68,48 @@
             }
             </style>
 
-    <div class="container container-agenda">
-        <section class="agenda">
-            <h2>Publikasi</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Document File</th>
-                        <th>Unduh</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @php
-                    $no = 1;
-                @endphp
-                    @forelse($publikasi as $pb)
-                    <tr>
-                        <td>{{ $no }}</td>
-                        <td>{!!$pb->name!!}</td>
-                        <td>
-                        <button onclick="downloadFile('{{ asset('storage/file-publikasi/'.$pb->file) }}')" class="btn btn-primary">
-                            Download PDF 
-                        </button>
-                        </td>
-                    </tr>
+    <div class="container ">
+        <div class="container-publikasi">
+            <section class="agenda">
+                <h2>Publikasi</h2>
+                <table style="width:100%;overflow-x: auto; ">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Document File</th>
+                            <th>Unduh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     @php
-                        $no++;
+                        $no = 1;
                     @endphp
-                    @empty
-                    <tr>
-                        <td>tidak ada data</td>
-                    </tr>
-                    @endforelse
-                    
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
-
-            {{ $publikasi->links() }}
-        </section>
-        <aside class="kegiatan">
-            <h2>Kegiatan</h2>
-            <ul>
-                @forelse($kegiatan as $kg)
-                <li>
-                    <h3>{!!$kg->name!!}</h3>
-                    <p class="date">{{ \Carbon\Carbon::parse($kg->created_at)->isoFormat('dddd, D MMMM YYYY') }}</p>
-                    <p class="category">Sosialisasi</p>
-                </li>
-                @php
-                    $no++;
-                @endphp
-                @empty
-                <li>
-                    tidak ada data
-                </li>
-                @endforelse
-                {{ $kegiatan->links() }}
-
-                <!-- Add more items as needed -->
-            </ul>
-        </aside>
+                        @forelse($publikasi as $pb)
+                        <tr>
+                            <td>{{ $no }}</td>
+                            <td>{!!$pb->name!!}</td>
+                            <td>
+                            <button onclick="downloadFile('{{ asset('storage/file-publikasi/'.$pb->file) }}')" class="btn btn-primary">
+                                Download PDF 
+                            </button>
+                            </td>
+                        </tr>
+                        @php
+                            $no++;
+                        @endphp
+                        @empty
+                        <tr>
+                            <td>tidak ada data</td>
+                        </tr>
+                        @endforelse
+                        
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+    
+                {{ $publikasi->links() }}
+            </section>
+        </div>
     </div>
 
     <script>

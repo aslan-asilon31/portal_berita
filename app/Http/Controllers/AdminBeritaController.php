@@ -25,7 +25,7 @@ class AdminBeritaController extends Controller
 
         $berita = News::where('category', 'berita')
                 ->with('masterCatPost')
-                ->orderBy('start_date', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->get();
         return view('admin_berita', compact('theme','logo','berita'));
     }
@@ -43,34 +43,42 @@ class AdminBeritaController extends Controller
 
     public function store(Request $request)
     {
-
         
-        //upload image
-        // Ambil file dari request
-        $file = $request->file('image');
-        $originalFileName = $file->getClientOriginalName();
-
-        // Tentukan lokasi tujuan di dalam folder 'public'
-        $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__berita');
-
-        // Pastikan folder tujuan ada
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
+        // Ambil data gambar cropped dari request
+        $imageData = $request->input('image_cropped');
+        
+        if ($imageData) {
+            // Menghapus prefix data URL base64
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $imageName = time() . '.png'; // Nama file gambar yang disimpan
+    
+            // Decode base64 menjadi binary
+            $imageBinary = base64_decode($imageData);
+    
+            // Tentukan lokasi tujuan di dalam folder 'public'
+            $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__berita');
+    
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+    
+            // Simpan file ke folder 'public/galeri__foto'
+            file_put_contents($destinationPath . '/' . $imageName, $imageBinary);
+    
+            // Mengembalikan URL untuk akses gambar
+            $fileUrl = url('PORTAL-BERITA-ASSET/informasi__berita/' . $imageName);
+        } else {
+            // Jika gambar tidak ada
+            $fileUrl = null;
         }
-
-        // Simpan file ke folder 'public/informasi__berita'
-        $fileName = $file->getClientOriginalName();
-        $file->move($destinationPath, $fileName);
-
-        // Mengembalikan URL untuk akses gambar
-        $fileUrl = url('PORTAL-BERITA-ASSET/informasi__berita/' . $fileName);
-        //upload image end
 
 
         // Ambil nilai reservationtime
         $news = News::create([
             'cat_post_id'   => $request->berita_status,
-            'image'     => $originalFileName,
+            'image'     => $imageName ?? null,
             'name'     => $request->berita_name,
             'desc2'   => $request->berita_detail,
             'berita_type'   => $request->type_news_id,
@@ -147,46 +155,49 @@ class AdminBeritaController extends Controller
         } else {
 
 
-            //hapus old image
-            $filePath = public_path('PORTAL-BERITA-ASSET/informasi__berita/' . $news->image);
 
-            if (File::exists($filePath)) {
-                File::delete($filePath);
-            }
-            //hapus old image end
+            // Ambil data gambar cropped dari request
+            $imageData = $request->input('image_cropped');
 
-            //upload new image
-                //upload image
-                // Ambil file dari request
-                $file = $request->file('image');
-                $originalFileName = $file->getClientOriginalName();
 
+            
+            if ($imageData) {
+                // Menghapus prefix data URL base64
+                $imageData = str_replace('data:image/png;base64,', '', $imageData);
+                $imageData = str_replace(' ', '+', $imageData);
+                $imageName = time() . '.png'; // Nama file gambar yang disimpan
+        
+                // Decode base64 menjadi binary
+                $imageBinary = base64_decode($imageData);
+        
                 // Tentukan lokasi tujuan di dalam folder 'public'
                 $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__berita');
-
+        
                 // Pastikan folder tujuan ada
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0755, true);
                 }
-
-                // Simpan file ke folder 'public/informasi__berita'
-                $fileName = $file->getClientOriginalName();
-                $file->move($destinationPath, $fileName);
-
+        
+                // Simpan file ke folder 'public/galeri__foto'
+                file_put_contents($destinationPath . '/' . $imageName, $imageBinary);
+        
                 // Mengembalikan URL untuk akses gambar
-                $fileUrl = url('informasi__berita/' . $fileName);
-            //upload image end
+                $fileUrl = url('PORTAL-BERITA-ASSET/informasi__berita/' . $imageName);
+            } else {
+                // Jika gambar tidak ada
+                $fileUrl = null;
+            }
 
             
             $news->update([
-                'image'     => $originalFileName,
+                'image'     =>  $imageName ?? null,
                 'cat_post_id'   => $request->berita_status,
                 'name'     => $request->berita_name,
                 'status'   => $request->berita_status,
                 'type_news_id'   => $request->berita_type,
                 'desc2'   => $request->berita_detail,
-                'start_date'   => $request->startDateTime,
-                'end_date'   => $request->endDateTime,
+                'start_date'   => $request->start_date,
+                'end_date'   => $request->end_date,
                 'category'   => 'berita'
             ]);
 

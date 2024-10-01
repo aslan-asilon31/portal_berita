@@ -66,33 +66,43 @@ class AdminKegiatanController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-
-        //upload image
-            // Ambil file dari request
-            $file = $request->file('image');
-            $originalFileName = $file->getClientOriginalName();
-
+        
+        // Ambil data gambar cropped dari request
+        $imageData = $request->input('image_cropped');
+        
+        if ($imageData) {
+            // Menghapus prefix data URL base64
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $imageName = time() . '.png'; // Nama file gambar yang disimpan
+    
+            // Decode base64 menjadi binary
+            $imageBinary = base64_decode($imageData);
+    
             // Tentukan lokasi tujuan di dalam folder 'public'
             $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan');
-
+    
             // Pastikan folder tujuan ada
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
-
-            // Simpan file ke folder 'public/informasi__kegiatan'
-            $fileName = $file->getClientOriginalName();
-            $file->move($destinationPath, $fileName);
-
+    
+            // Simpan file ke folder 'public/galeri__foto'
+            file_put_contents($destinationPath . '/' . $imageName, $imageBinary);
+    
             // Mengembalikan URL untuk akses gambar
-            $fileUrl = url('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $fileName);
-        //upload image end
+            $fileUrl = url('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $imageName);
+        } else {
+            // Jika gambar tidak ada
+            $fileUrl = null;
+        }
+
 
 
         $news = News::create([
             'type_news_id'     => $request->kegiatan_type,
             'cat_post_id'     => $request->kegiatan_status,
-            'image'     => $originalFileName,
+            'image'     => $imageName ?? null,
             'name'     => $request->kegiatan_name,
             'desc2'     => $request->kegiatan_detail,
             'status'   => $request->kegiatan_status,
@@ -139,14 +149,15 @@ class AdminKegiatanController extends Controller
             return redirect()->back()->withErrors(['msg' => 'Data berita tidak ditemukan.']);
         }
 
-            $kegiatan_names = $request->kegiatan_name; // Ambil nilai dari request
-            $cleaned_kegiatan_name = preg_replace('/<\/?p>|<br\s*\/?>/', '', $kegiatan_names);
+        $kegiatan_names = $request->kegiatan_name; // Ambil nilai dari request
+        $cleaned_kegiatan_name = preg_replace('/<\/?p>|<br\s*\/?>/', '', $kegiatan_names);
 
+            
         if($request->file('image') == "") {
 
             $news->update([
                 'type_news_id'  => $request->kegiatan_type,
-                'name'     => $cleaned_kegiatan_name,
+                'name'     => $request->kegiatan_name,
                 'status'   => $request->kegiatan_status,
                 'desc2'   => $request->kegiatan_detail,
                 'start_date'   => $request->start_date,
@@ -156,40 +167,41 @@ class AdminKegiatanController extends Controller
 
         } else {
 
-            //hapus old image
-                $filePath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $news->image);
-
-                if (File::exists($filePath)) {
-                    File::delete($filePath);
-                }
-            //hapus old image end
-
-            //upload new image
-                //upload image
-                // Ambil file dari request
-                $file = $request->file('image');
-                $originalFileName = $file->getClientOriginalName();
-
+                        
+            // Ambil data gambar cropped dari request
+            $imageData = $request->input('image_cropped');
+            
+            if ($imageData) {
+                // Menghapus prefix data URL base64
+                $imageData = str_replace('data:image/png;base64,', '', $imageData);
+                $imageData = str_replace(' ', '+', $imageData);
+                $imageName = time() . '.png'; // Nama file gambar yang disimpan
+        
+                // Decode base64 menjadi binary
+                $imageBinary = base64_decode($imageData);
+        
                 // Tentukan lokasi tujuan di dalam folder 'public'
                 $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__kegiatan');
-
+        
                 // Pastikan folder tujuan ada
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0755, true);
                 }
-
-                // Simpan file ke folder 'public/informasi__kegiatan'
-                $fileName = $file->getClientOriginalName();
-                $file->move($destinationPath, $fileName);
-
+        
+                // Simpan file ke folder 'public/galeri__foto'
+                file_put_contents($destinationPath . '/' . $imageName, $imageBinary);
+        
                 // Mengembalikan URL untuk akses gambar
-                $fileUrl = url('informasi__kegiatan/' . $fileName);
-            //upload image end
+                $fileUrl = url('PORTAL-BERITA-ASSET/informasi__kegiatan/' . $imageName);
+            } else {
+                // Jika gambar tidak ada
+                $fileUrl = null;
+            }
 
 
             $news->update([
                 'type_news_id'     => $request->kegiatan_type,
-                'image'     => $originalFileName,
+                'image'     => $imageName ?? null,
                 'name'     => $request->kegiatan_name,
                 'status'   => $request->kegiatan_status,
                 'desc2'   => $request->kegiatan_detail,

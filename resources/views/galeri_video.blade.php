@@ -19,24 +19,29 @@
                             <div class="news-item">
                                 <div class="news-image">
                                 <td>
+                               
                                 @php
-                                // Ambil URL video dari database
-                                $videoUrl = $br->video; // Misalnya ini adalah URL video yang diberikan
+                                    // Ambil URL video dari database
+                                    $videoUrl = $br->video; // Misalnya ini adalah URL video yang diberikan
 
-                                // Variabel untuk menyimpan embed URL
-                                $embedUrl = '';
+                                    // Variabel untuk menyimpan embed URL
+                                    $embedUrl = '';
 
-                                // Cek jika URL berasal dari YouTube
-                                if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoUrl, $matches)) {
-                                    $videoId = $matches[1];
-                                    $embedUrl = "https://www.youtube.com/embed/{$videoId}";
-                                }
-                                // Cek jika URL berasal dari Instagram
-                                elseif (preg_match('/\/(?:reel|p)\/([^\/]+)/', $videoUrl, $matches)) {
-                                    $shortcode = $matches[1];
-                                    $embedUrl = "https://instagram.com/p/{$shortcode}/embed";
-                                }
-
+                                    // Cek jika URL berasal dari YouTube
+                                    if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoUrl, $matches)) {
+                                        $videoId = $matches[1];
+                                        $embedUrl = "https://www.youtube.com/embed/{$videoId}";
+                                    }
+                                    // Cek jika URL berasal dari YouTube Shorts
+                                    elseif (preg_match('/(?:https?:\/\/)?(?:www\.)?youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/', $videoUrl, $matches)) {
+                                        $videoId = $matches[1];
+                                        $embedUrl = "https://www.youtube.com/embed/{$videoId}";
+                                    }
+                                    // Cek jika URL berasal dari Instagram
+                                    elseif (preg_match('/\/(?:reel|p)\/([^\/]+)/', $videoUrl, $matches)) {
+                                        $shortcode = $matches[1];
+                                        $embedUrl = "https://instagram.com/p/{$shortcode}/embed";
+                                    }
                                 @endphp
 
                                     @if($embedUrl)

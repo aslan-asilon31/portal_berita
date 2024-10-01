@@ -49,25 +49,37 @@ class AdminPengumumanController extends Controller
 
             // Jika ada gambar yang diunggah
             if ($request->hasFile('image')) {
-                //upload image
-                    // Ambil file dari request
-                    $file = $request->file('image');
-                    $originalFileName = $file->getClientOriginalName();
-
+               
+                        
+                // Ambil data gambar cropped dari request
+                $imageData = $request->input('image_cropped');
+                
+                if ($imageData) {
+                    // Menghapus prefix data URL base64
+                    $imageData = str_replace('data:image/png;base64,', '', $imageData);
+                    $imageData = str_replace(' ', '+', $imageData);
+                    $imageName = time() . '.png'; // Nama file gambar yang disimpan
+            
+                    // Decode base64 menjadi binary
+                    $imageBinary = base64_decode($imageData);
+            
                     // Tentukan lokasi tujuan di dalam folder 'public'
                     $destinationPath = public_path('PORTAL-BERITA-ASSET/informasi__pengumuman');
-
+            
                     // Pastikan folder tujuan ada
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath, 0755, true);
                     }
-
-                    $fileName = $file->getClientOriginalName();
-                    $file->move($destinationPath, $fileName);
-
+            
+                    // Simpan file ke folder 'public/galeri__foto'
+                    file_put_contents($destinationPath . '/' . $imageName, $imageBinary);
+            
                     // Mengembalikan URL untuk akses gambar
-                    $fileUrl = url('PORTAL-BERITA-ASSET/informasi__pengumuman/' . $fileName);
-                //upload image end
+                    $fileUrl = url('PORTAL-BERITA-ASSET/informasi__pengumuman/' . $imageName);
+                } else {
+                    // Jika gambar tidak ada
+                    $fileUrl = null;
+                }
  
             }
             
@@ -75,7 +87,7 @@ class AdminPengumumanController extends Controller
             // Buat array untuk data yang akan disimpan
             $data = [
                 'name' => $request->input('pengumuman_name'),
-                'image' => $originalFileName,
+                'image' => $imageName ?? null,
                 'desc2' => $request->input('pengumuman_detail'),
                 'cat_post_id' => $request->input('pengumuman_status'),
                 'status' => $request->input('pengumuman_status'),

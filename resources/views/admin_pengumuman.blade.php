@@ -39,7 +39,7 @@
                         <th>Name</th>
                         <th>Status</th>
                         <th>Kategori</th>
-                        <th>Tanggal</th>
+                        <th>Tanggal pengumuman dibuat</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -85,7 +85,7 @@
                           <th>Name</th>
                           <th>Status</th>
                           <th>Kategori</th>
-                          <th>Tanggal</th>
+                          <th>Tanggal pengumuman dibuat</th>
                           <th>Action</th>
                         </tr>
                     </tfoot>

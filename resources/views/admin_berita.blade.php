@@ -36,10 +36,13 @@
                     <thead>
                     <tr>
                         <th>Gambar</th>
-                        <th>Name</th>
+                        <th>Nama</th>
+                        <th>Tipe Berita</th>
                         <th>Status</th>
                         <th>Kategori</th>
-                        <th>Tanggal</th>
+                        <th>Tanggal Mulai Berita</th>
+                        <th>Tanggal Berakhir Berita</th>
+                        <th>Tanggal Berita Dibuat</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -53,6 +56,7 @@
                           @endif 
                             <td>{!! $kg->name !!}</td>
                             
+                            <td>{{ $kg->masterTypePost->name  }}</td>
                             <td>{{ $kg->masterCatPost->name  }}</td>
                             <td>{{ $kg->category }}</td>
                             <td>
@@ -60,6 +64,20 @@
                                     -
                                 @else
                                     {{ $kg->start_date->format('d-m-Y H:i') }} <!-- Formatting date -->
+                                @endif
+                            </td>
+                            <td>
+                                @if(empty($kg->end_date) || is_null($kg->end_date))
+                                    -
+                                @else
+                                    {{ $kg->end_date->format('d-m-Y H:i') }} <!-- Formatting date -->
+                                @endif
+                            </td>
+                            <td>
+                                @if(empty($kg->created_at) || is_null($kg->created_at))
+                                    -
+                                @else
+                                    {{ $kg->created_at->format('d-m-Y H:i') }} <!-- Formatting date -->
                                 @endif
                             </td>
                             <td> 
@@ -82,10 +100,13 @@
                     <tfoot>
                         <tr>
                           <th>Gambar</th>
-                          <th>Name</th>
+                          <th>Nama</th>
+                          <th>Tipe Berita</th>
                           <th>Status</th>
                           <th>Kategori</th>
-                          <th>Tanggal</th>
+                          <th>Tanggal Mulai Berita</th>
+                          <th>Tanggal Berakhir Berita</th>
+                          <th>Tanggal Berita Dibuat</th>
                           <th>Action</th>
                         </tr>
                     </tfoot>

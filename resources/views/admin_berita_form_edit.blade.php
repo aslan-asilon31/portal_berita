@@ -137,10 +137,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label>
-                                        Type Kegiatan
+                                        Type Berita
                                     </label>
                                     <select class="form-control @error('berita_type') is-invalid @enderror" name="berita_type" id="berita_type">
-                                        <option value="">Wajib Pilih Tipe Kegiatan</option>
+                                        <option value="">Wajib Pilih Tipe Berita</option>
                                         @forelse($type_kegiatan as $tk)
                                             <option value="{{ $tk->id }}" {{ $tk->id == $news->type_news_id ? 'selected' : '' }}>
                                                 {!! $tk->name !!}
@@ -162,7 +162,7 @@
                                         <label>Waktu @yield('title') mulai </label>
                                         <div class="input-group">
                                           <div class="input-group date date-input" id="" data-target-input="nearest">
-                                              <input type="datetime-local" name="start_date" value="{{ $news->start_date }}" class="form-control " data-target="#"/>
+                                              <input type="datetime-local" name="start_date" value="{{ old('start_date', $news->start_date) }}" class="form-control " data-target="#"/>
                                             
                                           </div>
                                         </div>
@@ -174,7 +174,7 @@
                                       <label>Waktu @yield('title') berakhir </label>
                                       <div class="input-group">
                                           <div class="input-group date date-input" id="reservationdatetime_end" data-target-input="nearest">
-                                              <input type="datetime-local" name="end_date" value="{{ $news->end_date }}" class="form-control " data-target="#"/>
+                                              <input type="datetime-local" name="end_date" value="{{ old('end_date', $news->end_date) }}" class="form-control " data-target="#"/>
                                             
                                           </div>
                                       </div>
@@ -186,34 +186,38 @@
 
                             </div>
                             <div class="col-lg-4">
-                                @if($news->image)
-                                    <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" value="{{ old('image', $news->image) }}" id="image" name="image" accept="image/*">
-                                                <label class="custom-file-label" for="image">Choose file</label>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2" style="width:100%;">
-                                            <img src="{{ asset('informasi__berita/' . $news->image) }}" class="rounded" style="width: 150px">
+                                <div class="form-group">
+                                    <label for="image">Masukan Gambar</label>
+
+                                    
+                                    <div id="progressContainer" class="d-none">
+                                    <div class="progress">
+                                        <div id="progressBar" class="progress-bar bg-primary progress-bar-striped" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        <span id="progressText" class="sr-only">0% Complete</span>
                                         </div>
                                     </div>
-                                @else
-                                    <div class="form-group">
-                                        <label for="image">Masukan Gambar</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-                                                <label class="custom-file-label" for="image">Choose file</label>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" value="{{ old('image', $news->image) }}" id="imageInput" name="image" accept="image/*">
+                                            <input type="hidden" id="cropped_image" name="image_cropped">
+                                            <label class="custom-file-label" for="image">Choose file</label>
                                         </div>
                                     </div>
-                                @endif
+                                    <div class="mt-2">
+                                        @if(old('image', $news->image))
+                                            <img id="imagePreviewGaleriFoto" src="{{ asset('PORTAL-BERITA-ASSET/informasi__berita/' . old('image', $news->image)) }}" class="rounded" style="width: 150px">
+                                        @else
+                                            <img id="imagePreviewGaleriFoto" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
+                                        @endif
+                                    </div>
+                                    <button type="button" id="cropButton" class="btn btn-sm bg-purple text-white mt-2">Crop & Save</button>
+
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
 
@@ -362,4 +366,78 @@
 
       });
     </script>
+
+
+<script>
+    var cropper;
+    var image = document.getElementById('imagePreviewGaleriFoto');
+    var imageInput = document.getElementById('imageInput');
+
+    imageInput.addEventListener('change', function(e) {
+        var files = e.target.files;
+        var done = function (url) {
+            image.src = url;
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                aspectRatio: 750 / 500, // Sesuaikan dengan rasio yang diinginkan
+                viewMode: 1,
+                preview: '.preview',
+            });
+        };
+
+        var reader;
+        var file;
+        if (files && files.length > 0) {
+            file = files[0];
+            reader = new FileReader();
+            reader.onload = function () {
+                done(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+    document.getElementById('cropButton').addEventListener('click', function() {
+      
+        // Tampilkan progress bar
+        document.getElementById('progressContainer').classList.remove('d-none');
+        var progressBar = document.getElementById('progressBar');
+        var progressText = document.getElementById('progressText');
+        var progress = 0;
+        
+        if (!cropper) {
+            alert('Cropper belum diinisialisasi');
+            return;
+        }
+        
+        var canvas = cropper.getCroppedCanvas();
+        if (canvas) {
+            var base64Image = canvas.toDataURL('image/png');
+            document.getElementById('cropped_image').value = base64Image;
+
+            // Simulasi proses pengolahan
+            var interval = setInterval(function() {
+                if (progress < 100) {
+                    progress += 10; // Naikkan progress
+                    progressBar.style.width = progress + '%';
+                    progressBar.setAttribute('aria-valuenow', progress);
+                    progressText.textContent = progress + '% Complete';
+                } else {
+                    clearInterval(interval);
+                    // Sembunyikan progress bar setelah selesai
+                    setTimeout(function() {
+                        document.getElementById('progressContainer').classList.add('d-none');
+                    }, 500);
+                    alert('Sukses di crop');
+                }
+            }, 100); // Interval waktu untuk simulasi
+
+        } else {
+            alert('Tidak bisa mengambil canvas dari cropper');
+        }
+    });
+</script>
 @endpush

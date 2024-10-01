@@ -66,18 +66,18 @@ class WelcomeController extends Controller
         $kegiatan =  News::where('category', 'kegiatan')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->paginate(10);
 
         $agenda = News::where('category', 'agenda')
                 ->with('masterCatPost')
                 ->where('status',1)
                 ->orderBy('created_at', 'desc')
-                ->latest()->paginate(5);
+                ->paginate(10);
         return view('agenda', compact('social_medias','berita_kategori','logo','agenda','kegiatan'));
     }
 
     public function berita(){
-                $social_medias = Settings::where('category','social-media')->get();
+        $social_medias = Settings::where('category','social-media')->get();
         $berita_kategori = MasterTypePost::all();
         $logo = Settings::where('category','logo')->first();
 
@@ -90,19 +90,19 @@ class WelcomeController extends Controller
     }
 
     public function publikasi(){
-                $social_medias = Settings::where('category','social-media')->get();
+        $social_medias = Settings::where('category','social-media')->get();
         $berita_kategori = MasterTypePost::all();
         $logo = Settings::where('category','logo')->first();
 
         $kegiatan =  News::where('category', 'kegiatan')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->paginate(10);
 
         $publikasi = News::where('category', 'publikasi')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->paginate(10);
         return view('publikasi',compact('social_medias','berita_kategori','logo','publikasi','kegiatan'));
     }
     
@@ -199,7 +199,7 @@ class WelcomeController extends Controller
         $galeri_foto = News::where('category', 'galeri-foto')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->get();
 
         $social_medias = Settings::where('category','social-media')->get();
         $berita_kategori = MasterTypePost::all();
@@ -236,7 +236,7 @@ class WelcomeController extends Controller
         $galeri_video = News::where('category', 'galeri-video')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->get();
 
         return view('galeri_video',compact('social_medias','galeri_video','berita_kategori','logo'));
     }

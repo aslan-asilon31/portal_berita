@@ -58,49 +58,56 @@
 <body>
     <header>
         <nav class="navbar">
-            <div class="navbar-left">
-            @if(isset($logo) && !empty($logo->image))
-                <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/' . $logo->image) }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
-            @else
-                <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/logo-nama-new1.png') }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
-            @endif
 
-            </div>
-            <button class="navbar-toggle" id="navbar-toggle">&#9776;</button> <!-- Toggle button -->
-            <div class="navbar-right" id="navbar-right">
-                <!-- Main Menu -->
-                <ul class="main-menu">
-                    <li class="{{ request()->routeIs('index') ? 'active' : '' }}"><a href="/">Beranda</a></li>
-                    <li class="submenu {{ request()->routeIs('tentang_kami.index') ? 'active' : '' }} {{ request()->routeIs('visi_misi.index') ? 'active' : '' }} {{ request()->routeIs('tujuan.index') ? 'active' : '' }}">
-                        <a href="#">Tentang</a>
-                        <ul class="submenu-items">
-                            <li class="{{ request()->routeIs('tentang_kami.index') ? 'active' : '' }}"><a href="/tentang-kami">Tentang Kami</a></li>
-                            <li class="{{ request()->routeIs('visi_misi.index') ? 'active' : '' }}"><a href="/visi-misi">Visi & Misi</a></li>
-                            <li class="{{ request()->routeIs('tujuan.index') ? 'active' : '' }}"><a href="/tujuan">Tujuan</a></li>
-                        </ul>
-                    </li>
-                    <li class="submenu {{ request()->routeIs('agenda.index') ? 'active' : '' }} {{ request()->routeIs('berita.index') ? 'active' : '' }} {{ request()->routeIs('kegiatan.index') ? 'active' : '' }} {{ request()->routeIs('pengumuman.index') ? 'active' : '' }}">
-                        <a href="#">Informasi</a>
-                        <ul class="submenu-items">
-                            <li class="{{ request()->routeIs('agenda.index') ? 'active' : '' }}"><a href="/agenda">Agenda</a></li>
-                            <li class="{{ request()->routeIs('berita.index') ? 'active' : '' }}"><a href="/berita" class=" ">Berita</a></li>
-                            <li class="{{ request()->routeIs('kegiatan.index') ? 'active' : '' }}"><a href="/kegiatan">Kegiatan</a></li>
-                            <li class="{{ request()->routeIs('pengumuman.index') ? 'active' : '' }}"><a href="/pengumuman">Pengumuman</a></li>
-                        </ul>
-                    </li>
-                    <li  class="{{ request()->routeIs('publikasi.index') ? 'active' : '' }}"><a href="/publikasi">Publikasi</a></li>
-                    <li class="submenu {{ request()->routeIs('galeri_foto.index') ? 'active' : '' }} {{ request()->routeIs('galeri_video.index') ? 'active' : '' }} {{ request()->routeIs('infografis.index') ? 'active' : '' }}">
-                        <a href="#">Galeri</a>
-                        <ul class="submenu-items">
-                            <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="/galeri-foto/">Galeri Foto</a></li>
-                            <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="/galeri-video">Galeri Video</a></li>
-                            <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"hidden><a href="/infografis">Infografis</a></li>
-                        </ul>
-                    </li>
-                    <li   class="{{ request()->routeIs('mykontak.index') ? 'active' : '' }}"><a href="/mykontak">Kontak</a></li>
-                    <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="/susunan-redaksi">Susunan Pengurus</a></li>
-                </ul>
-            </div>
+                <div class="navbar-img" style="display:none;">
+                   
+                        <img src="{{ asset('portal_berita/img/portal-berita-logo.png') }}" alt="Logo" srcset="" style="width:45px;">
+                </div>
+
+                <div class="navbar-left">
+                    @if(isset($logo) && !empty($logo->image))
+                        <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/' . $logo->image) }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
+                    @else
+                        <img src="{{ asset('PORTAL-BERITA-ASSET/website-information/logo-nama-new1.png') }}" alt="Logo" srcset="" style="width:250px;border-radius:50px;">
+                    @endif
+                </div>
+                
+                
+                <button class="navbar-toggle" id="navbar-toggle">&#9776;</button> 
+                <div class="navbar-right" id="navbar-right">
+                    <!-- Main Menu -->
+                    <ul class="main-menu">
+                        <li class="{{ request()->routeIs('index') ? 'active' : '' }}"><a href="/">Beranda</a></li>
+                        <li class="submenu {{ request()->routeIs('tentang_kami.index') ? 'active' : '' }} {{ request()->routeIs('visi_misi.index') ? 'active' : '' }} {{ request()->routeIs('tujuan.index') ? 'active' : '' }}">
+                            <a href="#">Tentang</a>
+                            <ul class="submenu-items">
+                                <li class="{{ request()->routeIs('tentang_kami.index') ? 'active' : '' }}"><a href="/tentang-kami">Tentang Kami</a></li>
+                                <li class="{{ request()->routeIs('visi_misi.index') ? 'active' : '' }}"><a href="/visi-misi">Visi & Misi</a></li>
+                                <li class="{{ request()->routeIs('tujuan.index') ? 'active' : '' }}"><a href="/tujuan">Tujuan</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu {{ request()->routeIs('agenda.index') ? 'active' : '' }} {{ request()->routeIs('berita.index') ? 'active' : '' }} {{ request()->routeIs('kegiatan.index') ? 'active' : '' }} {{ request()->routeIs('pengumuman.index') ? 'active' : '' }}">
+                            <a href="#">Informasi</a>
+                            <ul class="submenu-items">
+                                <li class="{{ request()->routeIs('agenda.index') ? 'active' : '' }}"><a href="/agenda">Agenda</a></li>
+                                <li class="{{ request()->routeIs('berita.index') ? 'active' : '' }}"><a href="/berita" class=" ">Berita</a></li>
+                                <li class="{{ request()->routeIs('kegiatan.index') ? 'active' : '' }}"><a href="/kegiatan">Kegiatan</a></li>
+                                <li class="{{ request()->routeIs('pengumuman.index') ? 'active' : '' }}"><a href="/pengumuman">Pengumuman</a></li>
+                            </ul>
+                        </li>
+                        <li  class="{{ request()->routeIs('publikasi.index') ? 'active' : '' }}"><a href="/publikasi">Publikasi</a></li>
+                        <li class="submenu {{ request()->routeIs('galeri_foto.index') ? 'active' : '' }} {{ request()->routeIs('galeri_video.index') ? 'active' : '' }} {{ request()->routeIs('infografis.index') ? 'active' : '' }}">
+                            <a href="#">Galeri</a>
+                            <ul class="submenu-items">
+                                <li  class="{{ request()->routeIs('galeri_foto.index') ? 'active' : '' }}"><a href="/galeri-foto/">Galeri Foto</a></li>
+                                <li  class="{{ request()->routeIs('galeri_video.index') ? 'active' : '' }}"><a href="/galeri-video">Galeri Video</a></li>
+                                <li  class="{{ request()->routeIs('infografis.index') ? 'active' : '' }}"hidden><a href="/infografis">Infografis</a></li>
+                            </ul>
+                        </li>
+                        <li   class="{{ request()->routeIs('mykontak.index') ? 'active' : '' }}"><a href="/mykontak">Kontak</a></li>
+                        <li   class="{{ request()->routeIs('susunan_redaksi.index') ? 'active' : '' }}"><a href="/susunan-redaksi">Susunan Pengurus</a></li>
+                    </ul>
+                </div>
         </nav>
 
         @yield('carousel')

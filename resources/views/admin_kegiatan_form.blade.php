@@ -175,15 +175,29 @@
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="image">Masukan Gambar</label>
+
+                            
+                            <div id="progressContainer" class="d-none">
+                              <div class="progress">
+                                <div id="progressBar" class="progress-bar bg-primary progress-bar-striped" role="progressbar"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                  <span id="progressText" class="sr-only">0% Complete</span>
+                                </div>
+                              </div>
+                            </div>
+
                             <div class="input-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+                                    <input type="file" class="custom-file-input" id="imageInput" name="image" accept="image/*">
+                                    <input type="hidden" id="cropped_image" name="image_cropped">
                                     <label class="custom-file-label" for="image">Choose file</label>
                                 </div>
                             </div>
                             <div class="mt-2">
-                                <img id="imagePreview" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
+                                <img id="imagePreviewGaleriFoto" src="{{ asset('no-image.jpg') }}" alt="Image Preview" style="max-width: 100%; height: auto;">
                             </div>
+                            <button type="button" id="cropButton" class="btn btn-sm bg-purple text-white mt-2">Crop & Save</button>
+
                         </div>
                         </div>
                     </div>
@@ -231,9 +245,13 @@
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/daterangepicker/daterangepicker.css') }}">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
   @endpush
 
   @push('scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  
 
     <!-- daterangepicker -->
   <script src="{{ asset('adminlte/plugins/moment/moment.min.js') }}"></script>
@@ -464,4 +482,79 @@
 
       });
     </script>
+
+
+<script>
+    var cropper;
+    var image = document.getElementById('imagePreviewGaleriFoto');
+    var imageInput = document.getElementById('imageInput');
+
+    imageInput.addEventListener('change', function(e) {
+        var files = e.target.files;
+        var done = function (url) {
+            image.src = url;
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                aspectRatio: 750 / 500, // Sesuaikan dengan rasio yang diinginkan
+                viewMode: 1,
+                preview: '.preview',
+            });
+        };
+
+        var reader;
+        var file;
+        if (files && files.length > 0) {
+            file = files[0];
+            reader = new FileReader();
+            reader.onload = function () {
+                done(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+    document.getElementById('cropButton').addEventListener('click', function() {
+      
+        // Tampilkan progress bar
+        document.getElementById('progressContainer').classList.remove('d-none');
+        var progressBar = document.getElementById('progressBar');
+        var progressText = document.getElementById('progressText');
+        var progress = 0;
+        
+        if (!cropper) {
+            alert('Cropper belum diinisialisasi');
+            return;
+        }
+        
+        var canvas = cropper.getCroppedCanvas();
+        if (canvas) {
+            var base64Image = canvas.toDataURL('image/png');
+            document.getElementById('cropped_image').value = base64Image;
+
+            // Simulasi proses pengolahan
+            var interval = setInterval(function() {
+                if (progress < 100) {
+                    progress += 10; // Naikkan progress
+                    progressBar.style.width = progress + '%';
+                    progressBar.setAttribute('aria-valuenow', progress);
+                    progressText.textContent = progress + '% Complete';
+                } else {
+                    clearInterval(interval);
+                    // Sembunyikan progress bar setelah selesai
+                    setTimeout(function() {
+                        document.getElementById('progressContainer').classList.add('d-none');
+                    }, 500);
+                    alert('Sukses di crop');
+                }
+            }, 100); // Interval waktu untuk simulasi
+
+        } else {
+            alert('Tidak bisa mengambil canvas dari cropper');
+        }
+    });
+</script>
+
   @endpush

@@ -56,13 +56,13 @@ class WelcomeDetailController extends Controller
         $kegiatan =  News::where('category', 'kegiatan')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->get();
 
         $agenda = News::where('category', 'agenda')
                 ->with('masterCatPost')
                 ->where('status',1)
                 ->orderBy('created_at', 'desc')
-                ->latest()->paginate(5);
+                ->get();
         return view('agenda', compact('logo','agenda','kegiatan'));
     }
 
@@ -82,12 +82,12 @@ class WelcomeDetailController extends Controller
         $kegiatan =  News::where('category', 'kegiatan')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->get();
 
         $publikasi = News::where('category', 'file-publikasi')
         ->where('status',1)
         ->orderBy('created_at', 'desc')
-        ->latest()->paginate(5);
+        ->get();
         return view('publikasi',compact('logo','publikasi','kegiatan'));
     }
     

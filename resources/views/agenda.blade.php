@@ -69,9 +69,9 @@
             </style>
 
     <div class="container container-agenda">
-        <section class="">
+        <section class="table-responsive" style="overflow-x: auto;-webkit-overflow-scrolling: touch;">
             <h2>Agenda</h2>
-            <table>
+            <table style="width: 100%;">
                 <thead>
                     <tr>
                         <th>#</th>
